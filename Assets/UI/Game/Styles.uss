@@ -1,0 +1,4 @@
+.action-button {
+    flex-shrink: 1;
+    width: 100%;
+}

@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Game/Styles.uss?fileID=7433441132597879392&amp;guid=2804436c6ec746d499a0c511a334b7bb&amp;type=3#Styles" />
+    <ui:Button display-tooltip-when-elided="true" name="action-button-default" class="action-button" />
+    <ui:Label text="Label" display-tooltip-when-elided="true" name="score-label" style="-unity-text-align: middle-center; font-size: 24px; -unity-font-style: bold; position: absolute; text-shadow: 0 0 2px rgb(0, 0, 0);" />
+</ui:UXML>

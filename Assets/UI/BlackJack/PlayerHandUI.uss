@@ -1,0 +1,53 @@
+.game-action-button {
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    flex-direction: column;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+.game-action-button:hover {
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-bottom-color: rgb(255, 255, 0);
+    border-top-color: rgb(255, 255, 0);
+    border-left-color: rgb(255, 255, 0);
+    border-right-color: rgb(255, 255, 0);
+}
+
+.game-action-button:focus {
+}
+
+.game-action-button:active {
+}
+
+.game-action-button-text {
+    -unity-font-style: bold;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    width: 25px;
+    height: 25px;
+}
+
+.game-result-image {
+    width: 100px;
+    height: 100px;
+}
