@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Source.Model.Games;
 using Assets.Source.Model.Games.BlackJack;
 using UnityEngine;
@@ -7,8 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(GameUIScript))]
 public class PlayerAction : MonoBehaviour
 {
-    [SerializeField] private GameScript gameScript;
-    [SerializeField] private HandScript hand;
+    [SerializeField] private BJHandScript hand;
     [SerializeField] private CardCollection cardCollection;
     public GameUIScript uiScript;
 
@@ -22,28 +22,16 @@ public class PlayerAction : MonoBehaviour
 
     }
 
-    public void NotifyGameResult(GameResult result)
-    {
-        Color? color = null;
-        if (result == GameResult.Win)
-            color = Color.green;
-        if (result == GameResult.Lose)
-            color = Color.red;
-        if (result == GameResult.Push)
-            color = Color.yellow;
+    private int wins;
+    private int pushs;
+    private int loses;
 
-        uiScript.DisplayMessage(result.ToString(), color);
-    }
-
-    public void Hit()
+    public void NotifyGameResult(GameResult[] result)
     {
-        //Debug.Log("Player Hit");
-        gameScript.game.Hit();
-    }
+        wins += result.Where(x => x == GameResult.Win).Count();
+        pushs += result.Where(x => x == GameResult.Push).Count();
+        loses += result.Where(x => x == GameResult.Lose).Count();
 
-    public void Stand()
-    {
-        //Debug.Log("Player Stand");
-        gameScript.game.Stand();
+        uiScript.DisplayMessage($"W: {wins} P: {pushs} L: {loses}", Color.white);
     }
 }

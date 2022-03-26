@@ -4,19 +4,39 @@ using System.Linq;
 
 namespace Assets.Source.Model.Games.BlackJack.Users
 {
-    public class Player : User
+    internal class Player : User
     {
-        private IUser diller;
+        private Dealer dealer;
 
-        public Player(Func<IEnumerable<Card>, IEnumerable<int>> GetScores, IUser diller) : base(GetScores)
+        public bool isNotifiedResult;
+
+        public Player(Func<IEnumerable<Card>, IEnumerable<int>> GetScores, Dealer dealer)
+            : base(GetScores)
         {
-            this.diller = diller;
+            OnResult += (result) => isNotifiedResult = true;
+            this.dealer = dealer;
+        }
+
+        public override void AddCard(Card card)
+        {
+            base.AddCard(card);
+
+            InvokeOnCardAdd(card);
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            isNotifiedResult = false;
         }
 
         public override PlayerStatus? GetStatus()
         {
             if (IsBust())
                 return PlayerStatus.Bust;
+
+            if (dealer.IsBlackJack())
+                return PlayerStatus.Lose;
 
             if (IsMore())
                 return PlayerStatus.Win;
@@ -33,23 +53,23 @@ namespace Assets.Source.Model.Games.BlackJack.Users
         public bool IsMore()
         {
             var playerScores = this.GetScores().Where(x => x <= 21);
-            var dillerScores = diller.GetScores().Where(x => x <= 21);
+            var dillerScores = dealer.GetScores().Where(x => x <= 21);
             return playerScores.Any(p => dillerScores.All(d => p > d));
         }
+
         public bool IsLess()
         {
             var playerScores = this.GetScores().Where(x => x <= 21);
-            var dillerScores = diller.GetScores().Where(x => x <= 21);
+            var dillerScores = dealer.GetScores().Where(x => x <= 21);
             return dillerScores.Any(d => playerScores.All(p => d > p));
         }
 
         public bool IsEquals()
         {
             var playerScores = this.GetScores().Where(x => x <= 21);
-            var dillerScores = diller.GetScores().Where(x => x <= 21);
+            var dillerScores = dealer.GetScores().Where(x => x <= 21);
 
             return playerScores.Any(p => dillerScores.All(d => p >= d));
         }
     }
-
 }

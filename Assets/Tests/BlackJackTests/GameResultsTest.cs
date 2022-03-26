@@ -50,7 +50,7 @@ namespace Assets.Tests.BlackJackTest
             => TestGame(ranks, (game) =>
             {
                 Debug.Log("Player Stand");
-                game.Stand();
+                game.Turn(game.players[0], BlackJackTurn.Stand);
             });
 
         [TestCase(new Ranks[] { Ranks.Ten, Ranks.Ten, Ranks.Ace, Ranks.Nine, Ranks.Ten },
@@ -60,9 +60,9 @@ namespace Assets.Tests.BlackJackTest
              => TestGame(ranks, (game) =>
              {
                  Debug.Log("Player Hit");
-                 game.Hit();
+                 game.Turn(game.players[0], BlackJackTurn.Hit);
                  Debug.Log("Player Hit");
-                 game.Hit();
+                 game.Turn(game.players[0], BlackJackTurn.Hit);
              });
 
         #endregion
@@ -77,20 +77,31 @@ namespace Assets.Tests.BlackJackTest
         private GameResult? TestGame(Ranks[] ranks, Action<IBlackJack> afterStart = null)
         {
             GameResult? gameResult = null;
-            var game = new BlackJack();
-            game.player.OnCardAdd += (card) => Debug.Log($"Player recieve {card}");
-            game.diller.OnCardAdd += (card) => Debug.Log($"Diller recieve {card}");
-            game.OnDillerUpHiddenCard += (card) => Debug.Log($"Diller up {card}");
-            game.OnGameResult += (result) =>
+            var game = new Game();
+            game.Init(1);
+            var gameEnd = false;
+            game.players[0].OnCardAdd += (card) => Debug.Log($"Player recieve {card}");
+            game.players[0].OnResult += (result) =>
             {
-                Debug.Log($"Game End");
-                Debug.Log($"{GetScores(game.player)} {result} {GetScores(game.diller)}");
                 gameResult = result;
+                Debug.Log($"Player {result}");
+            };
+            game.dealer.OnCardAdd += (card) => Debug.Log($"Diller recieve {card}");
+            game.OnDillerUpHiddenCard += (card) => Debug.Log($"Diller up {card}");
+            game.OnGameEnd += () =>
+            {
+                gameEnd = true;
+                Debug.Log($"Game End");
+                Debug.Log($"{GetScores(game.players[0])} {gameResult} {GetScores(game.dealer)}");
             };
             game.deck.cards = ranks.Select(x => new Card { rank = x, suit = Suits.Clubs }).ToList();
             Debug.Log("Game Start");
             game.Start();
             afterStart?.Invoke(game);
+
+            if (!gameEnd)
+                throw new Exception("Game Is Not End");
+
             return gameResult;
         }
 

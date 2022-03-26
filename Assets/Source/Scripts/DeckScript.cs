@@ -16,16 +16,11 @@ public class DeckScript : MonoBehaviour, ICardStorage
 
     public Vector3 GetCardPosition()
     {
-        return this.transform.position + (cardOffset * (cards.Count + 1));
+        return this.transform.position + (cardOffset * cards.Count);
     }
 
     public void RemoveCard(CardMono card)
     {
         cards.Remove(card);
-    }
-
-    public void UpdateScores()
-    {
-
     }
 }

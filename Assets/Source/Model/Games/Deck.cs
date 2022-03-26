@@ -9,10 +9,12 @@ namespace Assets.Source.Model.Games
     public class Deck
     {
         public List<Card> cards;
+        private List<Card> removedCards = new List<Card>();
 
         public Deck()
         {
-            Reload();
+            cards = Create().ToList();
+            Shuffle();
         }
 
         public bool TryPeek(out Card card)
@@ -21,6 +23,7 @@ namespace Assets.Source.Model.Games
             {
                 card = cards[0];
                 cards.Remove(card);
+                removedCards.Add(card);
 
                 return cards.Count > 0;
             }
@@ -31,7 +34,13 @@ namespace Assets.Source.Model.Games
 
         public void Reload()
         {
-            cards = Create().ToList();
+            var allCards = cards.ToList();
+            allCards.AddRange(removedCards);
+
+            cards = allCards;
+
+            removedCards.Clear();
+
             Shuffle();
         }
 

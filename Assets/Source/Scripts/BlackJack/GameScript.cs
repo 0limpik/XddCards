@@ -3,13 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Assets.Source.Model.Games;
 using Assets.Source.Model.Games.BlackJack;
+using Assets.Source.Scripts.BlackJack;
 using UnityEngine;
 
 public class GameScript : MonoBehaviour
 {
-    [HideInInspector] public IBlackJack game;
-    [SerializeField] HandScript playerHand;
-    [SerializeField] HandScript dillerHand;
+    public IBlackJack game;
+    [SerializeField] BJHandScript[] playerHands;
+    [SerializeField] BJHandScript dillerHand;
     [SerializeField] CardCollection cardCollection;
 
     [SerializeField] PlayerAction playerAction;
@@ -21,29 +22,48 @@ public class GameScript : MonoBehaviour
 
     public CardsSequenceScript sequence;
 
-    public float moveTime;
-    public float flipTime;
-
     private List<CardMono> allCards = new List<CardMono>();
 
-    public Task cardTranslate = Task.CompletedTask;
+    private List<GameResult> gameResults = new List<GameResult>();
+
+    [SerializeField] private CardsManager cardsManager = new CardsManager();
+
+    private Task cardTranslate = Task.CompletedTask;
 
     void Awake()
     {
-        game = new BlackJack();
-        game.player.OnCardAdd += (card) => OnCardAdd(card, playerHand);
-        game.diller.OnCardAdd += (card) => OnCardAdd(card, dillerHand);
-        game.OnDillerUpHiddenCard += OnDillerUpHiddenCard;
-        game.OnGameResult += OnGameResult;
+        var playerCount = playerHands.Length;
 
-        playerHand.user = game.player;
-        dillerHand.user = game.diller;
+        game = new Game();
+
+        game.Init(6);
+
+        for (int i = 0; i < playerCount; i++)
+        {
+            var player = game.players[i];
+            var playerHand = playerHands[i];
+            player.OnCardAdd += (card) => OnCardAdd(card, playerHand);
+            player.OnResult += (result) => gameResults.Add(result);
+            ///player.OnEnd += () => playerHand.SetAction(false);
+            //playerHand.user = player;
+        }
+
+        game.dealer.OnCardAdd += (card) => OnCardAdd(card, dillerHand);
+        game.OnDillerUpHiddenCard += OnDillerUpHiddenCard;
+        //dillerHand.user = game.dealer;
+
+        game.OnGameEnd += OnGameEnd;
     }
 
     void Start()
     {
-        playerAction.uiScript.RegisterPlayer(playerHand, game);
-        playerAction.uiScript.RegisterDiller(dillerHand);
+        foreach (var playerHand in playerHands)
+        {
+            //playerAction.uiScript.RegisterPlayer(playerHand, game);
+        }
+
+        //playerAction.uiScript.RegisterDiller(dillerHand);
+
         StartGame();
     }
 
@@ -53,7 +73,7 @@ public class GameScript : MonoBehaviour
 
         await Wait();
 
-        cardTranslate = MoveCard(new CardTranslateItem { card = cardMono, storage = storage });
+        //cardTranslate = cardsManager.MoveCard(new CardTranslateItem { card = cardMono, storage = storage });
     }
 
     private async void OnDillerUpHiddenCard(Card card)
@@ -64,26 +84,33 @@ public class GameScript : MonoBehaviour
 
         await Wait();
 
-        cardTranslate = FlipCard(dillerHiddenCard);
-        dillerHand.UpdateScores();
+       // cardTranslate = cardsManager.FlipCard(dillerHiddenCard);
+        //dillerHand.UpdateScores();
     }
 
-    private async void OnGameResult(GameResult result)
+    private async void OnGameEnd()
     {
         await Wait();
 
-        playerAction.NotifyGameResult(result);
-        playerAction.uiScript.ShowResults(game);
-        await TaskEx.Delay(1.5f);
+        //playerAction.NotifyGameResult(result);
+        //playerAction.uiScript.ShowResults(game);
+        await TaskEx.Delay(2.5f);
 
-        playerHand.ClearCards();
+        playerAction.NotifyGameResult(gameResults.ToArray());
+        gameResults.Clear();
+
+        foreach (var playerHand in playerHands)
+        {
+            playerHand.ClearCards();
+        }
+
         dillerHand.ClearCards();
 
-        await MoveCard(allCards.Select(x => new CardTranslateItem { card = x, storage = trashDeck }).ToArray());
+        //await cardsManager.MoveCard(allCards.Select(x => new CardTranslateItem { card = x, storage = trashDeck }).ToArray());
 
         allCards.Clear();
 
-        await TaskEx.Delay(2.5f);
+        await TaskEx.Delay(1.5f);
 
         StartGame();
     }
@@ -102,14 +129,6 @@ public class GameScript : MonoBehaviour
         return cardMono;
     }
 
-    async Task Wait()
-    {
-        do
-        {
-            await Task.Yield();
-        } while (!cardTranslate.IsCompleted);
-    }
-
     async void StartGame()
     {
         await Wait();
@@ -120,72 +139,14 @@ public class GameScript : MonoBehaviour
 
         await Wait();
 
-        cardTranslate = MoveCard(new CardTranslateItem { card = dillerHiddenCard, storage = dillerHand });
+        //cardTranslate = cardsManager.MoveCard(new CardTranslateItem { card = dillerHiddenCard, storage = dillerHand });
     }
-
-    private Task MoveCard(CardTranslateItem card)
-        => MoveCard(new CardTranslateItem[] { card });
-
-    private async Task MoveCard(CardTranslateItem[] cards)
+    public async Task Wait()
     {
-        var moveTime = this.moveTime;
-
-        var positions = new List<(CardTranslateItem card, Vector3 destPos, Vector3 startPos)>();
-
-        foreach (var item in cards)
+        do
         {
-            positions.Add((item, item.storage.GetCardPosition(), item.card.transform.position));
-        }
-
-        if (moveTime != 0)
-        {
-            while ((moveTime -= Time.deltaTime) > 0)
-            {
-                var relation = moveTime / this.moveTime;
-                Move(relation);
-                await Task.Yield();
-            }
-        }
-        Move(0);
-
-        foreach (var item in cards)
-        {
-            item.storage.AddCard(item.card);
-        }
-
-        void Move(float relation)
-        {
-            foreach (var item in positions)
-            {
-                item.card.card.transform.position = Vector3.Lerp(item.destPos, item.startPos, relation);
-            }
-        }
-    }
-
-    private async Task FlipCard(CardMono card)
-    {
-        var flipTime = this.flipTime;
-        var startRotation = card.transform.rotation;
-        var startPosition = card.transform.position;
-        var flippedRotation = startRotation * Quaternion.AngleAxis(180, Vector3.forward);
-
-        if (flipTime != 0)
-        {
-            while ((flipTime -= Time.deltaTime) > 0)
-            {
-                var relation = flipTime / this.flipTime;
-                Rotate(relation);
-                await Task.Yield();
-            }
-        }
-
-        Rotate(0);
-
-        void Rotate(float relation)
-        {
-            card.transform.rotation = Quaternion.Lerp(flippedRotation, startRotation, relation);
-            card.transform.position = startPosition + new Vector3(0, CardObject.cardWidth * this.transform.localScale.z * Mathf.Sin(relation * Mathf.PI), 0);
-        }
+            await Task.Yield();
+        } while (!cardTranslate.IsCompleted);
     }
 }
 

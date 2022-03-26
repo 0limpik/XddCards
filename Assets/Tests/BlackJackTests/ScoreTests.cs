@@ -27,9 +27,9 @@ namespace Assets.Tests.BlackJackTest
             TestName = "10_3xImage",
             ExpectedResult = new int[] { 40 })]
 
-        public int[] Scores(Ranks[] ranks)
+        public int[] GetScores(Ranks[] ranks)
         {
-            var scores = BlackJack.GetScores(ranks.Select(x => new Card { rank = x, suit = Suits.Clubs }));
+            var scores = GameScores.GetBlackJackScores(ranks.Select(x => new Card { rank = x, suit = Suits.Clubs }));
 
             Debug.Log($"Recive: {ScoresToString(scores)}");
 

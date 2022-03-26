@@ -5,13 +5,16 @@ namespace Assets.Source.Model.Games.BlackJack
 {
     public interface IBlackJack
     {
-        IUser player { get; }
-        IUser diller { get; }
-        void Start();
-        void Hit();
-        void Stand();
-
-        event Action<GameResult> OnGameResult;
+        event Action OnGameEnd;
         event Action<Card> OnDillerUpHiddenCard;
+
+        bool isGame { get; }
+
+        IUser[] players { get; }
+        IUser dealer { get; }
+
+        void Init(int playerCount);
+        void Start();
+        void Turn(IUser user, BlackJackTurn turn);
     }
 }

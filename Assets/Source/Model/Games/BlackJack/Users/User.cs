@@ -4,13 +4,15 @@ using System.Linq;
 
 namespace Assets.Source.Model.Games.BlackJack.Users
 {
-    public abstract class User : IUser
+    internal abstract class User : IUser
     {
         public event Action<Card> OnCardAdd;
-        public event Action<GameResult> OnGameResult;
+        public event Action<GameResult> OnResult;
 
         protected List<Card> cards = new List<Card>();
         private Func<IEnumerable<Card>, IEnumerable<int>> GetScoresIternal;
+
+        public bool CanTurn { get; set; } = true;
 
         public User(Func<IEnumerable<Card>, IEnumerable<int>> GetScores)
         {
@@ -18,14 +20,25 @@ namespace Assets.Source.Model.Games.BlackJack.Users
         }
         public abstract PlayerStatus? GetStatus();
 
-        public void AddCard(Card card)
+        public virtual void AddCard(Card card)
         {
             cards.Add(card);
-            OnCardAdd?.Invoke(card);
+
+            if (IsBust())
+            {
+                CanTurn = false;
+                OnResult?.Invoke(GameResult.Lose);
+            }
+
+            if (IsBlackJack())
+            {
+                CanTurn = false;
+            }
         }
 
-        public void Reset()
+        public virtual void Reset()
         {
+            CanTurn = true;
             cards.Clear();
         }
 
@@ -37,8 +50,14 @@ namespace Assets.Source.Model.Games.BlackJack.Users
 
         public bool IsBlackJack()
             => this.GetScores().Any(x => x == 21);
-    }
 
+        public void InvokeOnResult(GameResult result)
+            => OnResult?.Invoke(result);
+
+        protected void InvokeOnCardAdd(Card card)
+            => OnCardAdd?.Invoke(card);
+
+    }
 
     public enum PlayerStatus
     {
