@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Source.Scripts.Bets;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Xdd.Scripts.Bets;
 
 namespace Xdd.UI.Elements
 {
-    public class ChipElement : Button
+    internal class ChipElement : Button
     {
         private static readonly string d_SpritePath = "Assets/Models/Chips/chip_0_25.asset";
         private static readonly string d_Value = "00000";

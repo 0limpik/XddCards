@@ -1,6 +1,6 @@
-﻿using Assets.Source.Model.Cycles.BlackJack;
+﻿using Xdd.Model.Cycles.BlackJack;
 
-namespace Assets.Source.Scripts.UI.BlackJack
+namespace Xdd.Scripts.UI.BlackJack
 {
     internal interface ICycleRequired
     {

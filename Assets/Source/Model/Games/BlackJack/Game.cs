@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Source.Model.Games.BlackJack.Users;
+using System.Runtime.CompilerServices;
+using Xdd.Model.Games.BlackJack.Users;
 
-namespace Assets.Source.Model.Games.BlackJack
+[assembly: InternalsVisibleTo("Tests")]
+namespace Xdd.Model.Games.BlackJack
 {
     public class Game : IBlackJack
     {
@@ -17,7 +19,7 @@ namespace Assets.Source.Model.Games.BlackJack
         private Dealer _dealer;
         private Card dillerHiddenCard;
 
-        public Deck deck = new Deck();
+        internal Deck deck = new Deck();
 
         public bool isGame { get; private set; }
 

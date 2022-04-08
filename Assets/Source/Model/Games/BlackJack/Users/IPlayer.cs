@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.Source.Model.Games.BlackJack.Users
+namespace Xdd.Model.Games.BlackJack.Users
 {
     public interface IPlayer
     {

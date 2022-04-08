@@ -1,25 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Source.Model.Cycles.BlackJack;
-using Assets.Source.Model.Games;
-using Assets.Source.Scripts.Hands;
-using Assets.Source.Scripts.UI;
 using UnityEngine;
+using Xdd.Model.Cycles.BlackJack;
+using Xdd.Model.Games;
+using Xdd.Scripts.Hands;
+using Xdd.Scripts.UI;
 
-namespace Assets.Source.Scripts.BlackJack
+namespace Xdd.Scripts.BlackJack
 {
     [RequireComponent(typeof(HandStorageScript))]
     public class BJHandScript : MonoBehaviour
     {
         public event Action OnBet;
         public event Action OnDoubleUp;
-
-        [field: SerializeField] public bool isDealer { get; private set; }
-
         public event Action OnCardsChange;
         public event Action<BJTurn> OnTurn;
         public event Action<Hand> OnHandChange;
+
+        [field: SerializeField]
+        public bool isDealer { get; private set; }
 
         public decimal Amount { get; private set; }
 
@@ -35,7 +35,8 @@ namespace Assets.Source.Scripts.BlackJack
         }
         public Hand _Hand;
 
-        [SerializeField] private HandUIScript handUIScript;
+        [SerializeField]
+        private HandUIScript handUIScript;
         private HandStorageScript storage;
 
         public List<ICard> cards => storage.cards.Select(x => x.card).Cast<ICard>().ToList();

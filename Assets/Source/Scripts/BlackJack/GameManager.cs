@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Assets.Source.Model.Cash;
-using Assets.Source.Model.Cycles.BlackJack;
-using Assets.Source.Scripts.Base;
-using Assets.Source.Scripts.BlackJack.Hands;
-using Assets.Source.Scripts.Hands;
-using Assets.Source.Scripts.UI;
 using UnityEngine;
+using Xdd.Model.Cash;
+using Xdd.Model.Cycles.BlackJack;
+using Xdd.Scripts.Base;
+using Xdd.Scripts.Hands;
+using Xdd.Scripts.UI;
 
-namespace Assets.Source.Scripts.BlackJack
+namespace Xdd.Scripts.BlackJack
 {
     internal class GameManager : MonoBehaviour
     {
@@ -79,7 +78,7 @@ namespace Assets.Source.Scripts.BlackJack
 
         private void Init()
         {
-            var player = cycle.Players.First();
+            var player = cycle.Users.First();
 
             bysyHands.InitCycle(cycle, player);
             uiScript.InitCycle(cycle, player);
@@ -88,8 +87,7 @@ namespace Assets.Source.Scripts.BlackJack
 
         private bool TrySwitchState()
         {
-            string message = null;
-            if (cycle.CanSwitchState(out message))
+            if (cycle.CanSwitchState(out string message))
             {
                 cycle.SwitchState();
                 return true;

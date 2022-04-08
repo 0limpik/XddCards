@@ -1,4 +1,4 @@
-﻿namespace Assets.Source.Model.Enums
+﻿namespace Xdd.Model.Enums
 {
     public enum Ranks
     {

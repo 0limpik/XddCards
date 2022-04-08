@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Assets.Source.Scripts.Base;
 
-namespace Assets.Source.Scripts.Cards
+[assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
+namespace Xdd.Scripts.Base
 {
-    public class TaskQueue
+    internal class TaskQueue
     {
         public event Action<TaskItem> OnTaskAdd;
         public event Action OnQueueEnd;
@@ -17,7 +18,7 @@ namespace Assets.Source.Scripts.Cards
         public ITaskItem AddTask(
             Func<TaskItem, Task> action,
             Func<TaskItem, Task> after = null,
-            Func<TaskItem, Task> before = null, 
+            Func<TaskItem, Task> before = null,
             string name = null)
         {
             var task = new TaskItem(action, after, before, name);
@@ -53,7 +54,7 @@ namespace Assets.Source.Scripts.Cards
         }
     }
 
-    public class TaskItem : ITaskItem
+    internal class TaskItem : ITaskItem
     {
         public string Name { get; private set; }
 
@@ -94,7 +95,7 @@ namespace Assets.Source.Scripts.Cards
         }
     }
 
-    public interface ITaskItem
+    internal interface ITaskItem
     {
         TaskItemStatus Status { get; }
 
@@ -102,10 +103,11 @@ namespace Assets.Source.Scripts.Cards
         event Action<TaskItem> OnEnd;
     }
 
-    public enum TaskItemStatus
+    internal enum TaskItemStatus
     {
         Wait,
         Run,
         Complete
     }
 }
+

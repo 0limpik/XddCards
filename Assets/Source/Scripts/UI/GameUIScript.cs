@@ -1,16 +1,16 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Assets.Source.Model.Cycles.BlackJack;
-using Assets.Source.Model.Cycles.BlackJack.Controllers;
-using Assets.Source.Scripts.UI.BlackJack;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Xdd.Model.Cycles.BlackJack;
+using Xdd.Model.Cycles.BlackJack.Controllers;
+using Xdd.Scripts.UI.BlackJack;
 
-namespace Assets.Source.Scripts.UI
+namespace Xdd.Scripts.UI
 {
     [RequireComponent(typeof(UIDocument))]
-    public class GameUIScript : MonoBehaviour, ICycleRequired
+    internal class GameUIScript : MonoBehaviour, ICycleRequired
     {
         private UIDocument document;
 

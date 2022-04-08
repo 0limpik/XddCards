@@ -1,83 +1,86 @@
 using System.Linq;
-using Assets.Source.Scripts.Peek;
 using UnityEngine;
+using Xdd.Scripts.Base;
 
-[RequireComponent(typeof(MeshRenderer))]
-public class TakeObjectScript : MonoBehaviour
+namespace Xdd.Scripts.Take
 {
-    [SerializeField] private TakeObject takeObject;
-
-    public bool Disable
+    [RequireComponent(typeof(MeshRenderer))]
+    internal class TakeObjectScript : MonoBehaviour
     {
-        set
-        {
-            _meshRenderer.enabled = !value;
-            _collider.enabled = !value;
-        }
-    }
+        [SerializeField] private TakeObject takeObject;
 
-    public TakeState State
-    {
-        get => _State;
-        set
+        public bool Disable
         {
-            if (value != _State)
+            set
             {
-                _State = value;
-                SetState(value);
+                _meshRenderer.enabled = !value;
+                _collider.enabled = !value;
             }
         }
-    }
-    [SerializeField] private TakeState _State;
 
-    private Light _light;
-    private Renderer _renderer;
-    private MeshRenderer _meshRenderer;
-    private Collider _collider;
-
-    private float intensity;
-
-    void Awake()
-    {
-        _light = this.GetComponentInChildren<Light>();
-        _renderer = this.GetComponent<Renderer>();
-        _meshRenderer = this.GetComponent<MeshRenderer>();
-        _collider = this.GetComponent<Collider>();
-        SetState(_State);
-
-        intensity = _light.intensity;
-    }
-
-    private void SetState(TakeState state)
-    {
-        var stateParam = takeObject.AllStates.First(x => x.state == state);
-
-        _renderer.material = stateParam.material;
-        _light.color = stateParam.lightColor;
-        _light.range = stateParam.lightRange;
-    }
-
-    private bool lastState;
-
-
-    void Update()
-    {
-        _light.intensity = intensity + Mathf.PingPong(Time.time * 3, 5);
-    }
-
-    void LateUpdate()
-    {
-        var state = false;
-
-        if (LastRaycastScript.underMouse == this.gameObject)
+        public TakeState State
         {
-            state = true;
+            get => _State;
+            set
+            {
+                if (value != _State)
+                {
+                    _State = value;
+                    SetState(value);
+                }
+            }
+        }
+        [SerializeField] private TakeState _State;
+
+        private Light _light;
+        private Renderer _renderer;
+        private MeshRenderer _meshRenderer;
+        private Collider _collider;
+
+        private float intensity;
+
+        void Awake()
+        {
+            _light = this.GetComponentInChildren<Light>();
+            _renderer = this.GetComponent<Renderer>();
+            _meshRenderer = this.GetComponent<MeshRenderer>();
+            _collider = this.GetComponent<Collider>();
+            SetState(_State);
+
+            intensity = _light.intensity;
         }
 
-        if (state != lastState)
+        private void SetState(TakeState state)
         {
-            _light.enabled = state;
-            lastState = state;
+            var stateParam = takeObject.AllStates.First(x => x.state == state);
+
+            _renderer.material = stateParam.material;
+            _light.color = stateParam.lightColor;
+            _light.range = stateParam.lightRange;
+        }
+
+        private bool lastState;
+
+
+        void Update()
+        {
+            _light.intensity = intensity + Mathf.PingPong(Time.time * 3, 5);
+        }
+
+        void LateUpdate()
+        {
+            var state = false;
+
+            if (LastRaycastScript.underMouse == this.gameObject)
+            {
+                state = true;
+            }
+
+            if (state != lastState)
+            {
+                _light.enabled = state;
+                lastState = state;
+            }
         }
     }
 }

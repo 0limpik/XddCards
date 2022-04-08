@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Source.Model.Enums;
+using Xdd.Model.Enums;
 using Random = UnityEngine.Random;
 
-namespace Assets.Source.Model.Games
+namespace Xdd.Model.Games
 {
     public class Deck
     {

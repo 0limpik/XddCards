@@ -3,48 +3,51 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public class MaterialAutomizerWindow : EditorWindow
+namespace Assets.Editor.EditorWindows
 {
-    private Material source;
-    private DefaultAsset importFolder;
-    private DefaultAsset exportFolder;
-
-    void OnEnable()
+    internal class MaterialAutomizerWindow : EditorWindow
     {
-        GetWindow<MaterialAutomizerWindow>();
-    }
+        private Material source;
+        private DefaultAsset importFolder;
+        private DefaultAsset exportFolder;
 
-    void OnGUI()
-    {
-        source = (Material)EditorGUILayout.ObjectField("Source", source, typeof(Material), false);
-
-        importFolder = (DefaultAsset)EditorGUILayout.ObjectField("Import Folder",
-                importFolder, typeof(DefaultAsset), false);
-
-        exportFolder = (DefaultAsset)EditorGUILayout.ObjectField("Export Folder",
-                exportFolder, typeof(DefaultAsset), false);
-
-
-        if (GUILayout.Button("Create"))
+        void OnEnable()
         {
-            var path = Application.dataPath;
-            path = path.Substring(0, path.Length - 6);
-            path += AssetDatabase.GetAssetPath(importFolder);
-            var files = Directory.GetFiles(path)
-                .Where(x => Path.GetExtension(x) != ".meta")
-                .Select(x => x.Remove(0, x.LastIndexOf("Assets")))
-                .ToList();
+            GetWindow<MaterialAutomizerWindow>();
+        }
 
-            foreach (var file in files)
+        void OnGUI()
+        {
+            source = (Material)EditorGUILayout.ObjectField("Source", source, typeof(Material), false);
+
+            importFolder = (DefaultAsset)EditorGUILayout.ObjectField("Import Folder",
+                    importFolder, typeof(DefaultAsset), false);
+
+            exportFolder = (DefaultAsset)EditorGUILayout.ObjectField("Export Folder",
+                    exportFolder, typeof(DefaultAsset), false);
+
+
+            if (GUILayout.Button("Create"))
             {
-                var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(file);
+                var path = Application.dataPath;
+                path = path.Substring(0, path.Length - 6);
+                path += AssetDatabase.GetAssetPath(importFolder);
+                var files = Directory.GetFiles(path)
+                    .Where(x => Path.GetExtension(x) != ".meta")
+                    .Select(x => x.Remove(0, x.LastIndexOf("Assets")))
+                    .ToList();
 
-                Debug.Log(texture.name);
-                var name = texture.name;
-                var material = Instantiate(source);
-                material.mainTexture = texture;
-                material.SetTexture("_HeightMap ", texture);
-                AssetDatabase.CreateAsset(material, @$"{AssetDatabase.GetAssetPath(exportFolder)}/{Path.GetFileNameWithoutExtension(file)}.mat");
+                foreach (var file in files)
+                {
+                    var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(file);
+
+                    Debug.Log(texture.name);
+                    var name = texture.name;
+                    var material = Instantiate(source);
+                    material.mainTexture = texture;
+                    material.SetTexture("_HeightMap ", texture);
+                    AssetDatabase.CreateAsset(material, @$"{AssetDatabase.GetAssetPath(exportFolder)}/{Path.GetFileNameWithoutExtension(file)}.mat");
+                }
             }
         }
     }

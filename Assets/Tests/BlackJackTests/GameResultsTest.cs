@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Assets.Source.Model.Enums;
-using Assets.Source.Model.Games;
-using Assets.Source.Model.Games.BlackJack;
-using Assets.Source.Model.Games.BlackJack.Users;
 using Assets.Tests.Extensions;
 using NUnit.Framework;
 using UnityEngine;
+using Xdd.Model.Enums;
+using Xdd.Model.Games;
+using Xdd.Model.Games.BlackJack;
+using Xdd.Model.Games.BlackJack.Users;
 
 namespace Assets.Tests.BlackJackTest
 {

@@ -2,17 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Assets.Source.Model.Cycles.BlackJack;
-using Assets.Source.Model.Cycles.BlackJack.Controllers;
-using Assets.Source.Scripts.Base;
-using Assets.Source.Scripts.BlackJack;
-using Assets.Source.Scripts.BlackJack.Hands;
-using Assets.Source.Scripts.UI.BlackJack;
 using UnityEngine;
+using Xdd.Model.Cycles.BlackJack;
+using Xdd.Model.Cycles.BlackJack.Controllers;
+using Xdd.Scripts.Base;
+using Xdd.Scripts.UI.BlackJack;
 
-namespace Assets.Source.Scripts.Hands
+namespace Xdd.Scripts.Hands
 {
-    public class BusyHandsScript : MonoBehaviour, ICycleRequired
+    internal class BusyHandsScript : MonoBehaviour, ICycleRequired
     {
         public event Action<HandScript> OnInteraction;
 
@@ -93,7 +91,7 @@ namespace Assets.Source.Scripts.Hands
             this.cycle = cycle;
             this.user = user;
 
-            controller.OnChangeExecute += OnChangeExecute; 
+            controller.OnChangeExecute += OnChangeExecute;
         }
 
         public void Lock(bool _lock)

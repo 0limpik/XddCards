@@ -2,58 +2,56 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Source.Model.Cycles.BlackJack.Controllers
+namespace Xdd.Model.Cycles.BlackJack.Controllers
 {
-    public class HandController : State
+    public class HandController : AState
     {
         private const string c_handCount = "Hand need more 0";
 
-        private User[] players;
-        private List<Hand> hands;
+        private User[] users;
+        private List<Hand> avalibleHands;
 
-        public Hand GetHand => hands.First();
+        private int HandCount => users.SelectMany(x => x.hands).Count();
 
-        private int HandCount => players.SelectMany(x => x.hands).Count();
-
-        internal HandController(User[] players, List<Hand> hands)
+        internal HandController(User[] users, List<Hand> hands)
         {
-            this.players = players;
-            this.hands = hands;
+            this.users = users;
+            this.avalibleHands = hands;
         }
 
-        internal void Take(User player)
+        internal void Take(User user)
         {
-            Check(player);
+            Check(user);
 
-            var hand = hands.FirstOrDefault();
+            var hand = avalibleHands.FirstOrDefault();
 
             if (hand == null)
                 throw new InvalidOperationException("has't free hand");
 
-            hands.Remove(hand);
+            avalibleHands.Remove(hand);
 
-            player.hands.Add(hand);
+            user.hands.Add(hand);
         }
 
-        internal void Release(User player)
+        internal void Release(User user)
         {
-            Check(player);
+            Check(user);
 
-            var hand = player.hands.FirstOrDefault();
+            var hand = user.hands.FirstOrDefault();
 
             if (hand == null)
                 throw new ArgumentException("has't hands");
 
-            player.hands.Remove(hand);
+            user.hands.Remove(hand);
 
-            hands.Add(hand);
+            avalibleHands.Add(hand);
         }
 
-        void Check(User player)
+        void Check(User user)
         {
             CheckExecute();
 
-            if (!players.Contains(player))
+            if (!users.Contains(user))
                 throw new ArgumentException();
         }
 
@@ -66,12 +64,6 @@ namespace Assets.Source.Model.Cycles.BlackJack.Controllers
         {
             if (HandCount <= 0)
                 throw new InvalidOperationException(c_handCount);
-        }
-
-        public override bool CanEnter(out string message)
-        {
-            message = null;
-            return true;
         }
 
         public override bool CanExit(out string message)

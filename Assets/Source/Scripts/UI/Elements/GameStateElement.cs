@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Assets.Source.Scripts.BlackJack;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Xdd.Scripts.BlackJack;
 using Xdd.UI.Elements;
 
-namespace Assets.Source.Scripts.UI.Elements
+namespace Xdd.Scripts.UI.Elements
 {
     internal class GameStateElement
     {
@@ -30,7 +30,7 @@ namespace Assets.Source.Scripts.UI.Elements
             return this;
         }
 
-        public async void SetEnable(float? delay)
+        public async void SetEnable(float? delay = null)
         {
             Element.SetEnabled(true);
 

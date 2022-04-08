@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Assets.Source.Model.Cycles.BlackJack
+namespace Xdd.Model.Cycles.BlackJack
 {
-    public abstract class State
+    public abstract class AState
     {
-        public event Action<State> OnIncorectState;
+        public event Action<AState> OnIncorectState;
 
         public event Action<bool> OnChangeExecute;
 
@@ -16,28 +16,14 @@ namespace Assets.Source.Model.Cycles.BlackJack
                 if (value)
                 {
                     _IsExecute = value;
-                    try
-                    {
-                        Enter();
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new BJCycleException(ex);
-                    }
+                    Enter();
                 }
 
                 OnChangeExecute?.Invoke(value);
 
                 if (!value)
                 {
-                    try
-                    {
-                        Exit();
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new BJCycleException(ex);
-                    }
+                    Exit();
                     _IsExecute = value;
                 }
             }
@@ -56,7 +42,16 @@ namespace Assets.Source.Model.Cycles.BlackJack
         protected abstract void Enter();
         protected abstract void Exit();
 
-        public abstract bool CanEnter(out string message);
-        public abstract bool CanExit(out string message);
+        public virtual bool CanEnter(out string message)
+        {
+            message = null;
+            return true;
+        }
+
+        public virtual bool CanExit(out string message)
+        {
+            message = null;
+            return true;
+        }
     }
 }

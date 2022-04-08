@@ -1,4 +1,4 @@
-﻿namespace Assets.Source.Model.Cash
+﻿namespace Xdd.Model.Cash
 {
     public class Bet
     {

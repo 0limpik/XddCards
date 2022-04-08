@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Source.Model.Enums;
+using Xdd.Model.Enums;
 
-namespace Assets.Source.Model.Games.BlackJack
+namespace Xdd.Model.Games.BlackJack
 {
     public static class GameScores
     {

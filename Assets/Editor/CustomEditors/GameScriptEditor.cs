@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.Source.Scripts.BlackJack;
-using Assets.Source.Scripts.Cards;
 using UnityEditor;
 using UnityEngine;
+using Xdd.Scripts.Base;
+using Xdd.Scripts.BlackJack;
 
 namespace Assets.Editor.CustomEditors
 {

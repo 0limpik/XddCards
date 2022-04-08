@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Xdd.Scripts.Cards;
 
-namespace Assets.Source.Model.Games
+namespace Xdd.Model.Games
 {
     [CreateAssetMenu(fileName = "CardCollection", menuName = "Xdd/CARD/Collection", order = 11)]
-    public class CardCollection : ScriptableObject
+    internal class CardCollection : ScriptableObject
     {
         [SerializeField] CardMono cardInstanse;
         public List<CardObject> cards;

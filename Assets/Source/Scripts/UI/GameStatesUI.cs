@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.Source.Model.Cycles.BlackJack;
-using Assets.Source.Model.Cycles.BlackJack.Controllers;
-using Assets.Source.Scripts.BlackJack;
-using Assets.Source.Scripts.UI.BlackJack;
-using Assets.Source.Scripts.UI.Elements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Xdd.Model.Cycles.BlackJack;
+using Xdd.Model.Cycles.BlackJack.Controllers;
+using Xdd.Scripts.BlackJack;
+using Xdd.Scripts.UI.BlackJack;
+using Xdd.Scripts.UI.Elements;
 
-namespace Assets.Source.Scripts.UI
+namespace Xdd.Scripts.UI
 {
     [ExecuteAlways]
     [RequireComponent(typeof(UIDocument))]
-    public class GameStatesUI : MonoBehaviour, ICycleRequired
+    internal class GameStatesUI : MonoBehaviour, ICycleRequired
     {
         private UIDocument document;
 
@@ -52,7 +52,7 @@ namespace Assets.Source.Scripts.UI
             cycle.OnStateChange += OnStateChange;
         }
 
-        private void OnStateChange(State state)
+        private void OnStateChange(AState state)
         {
             if (state is GameController)
             {

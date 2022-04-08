@@ -1,19 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Assets.Source.Model.Cycles.BlackJack;
-using Assets.Source.Model.Cycles.BlackJack.Controllers;
-using Assets.Source.Model.Games;
-using Assets.Source.Scripts.Base;
-using Assets.Source.Scripts.Cards;
-using Assets.Source.Scripts.Hands;
-using Assets.Source.Scripts.UI;
 using UnityEngine;
+using Xdd.Model.Cycles.BlackJack;
+using Xdd.Model.Cycles.BlackJack.Controllers;
+using Xdd.Model.Games;
+using Xdd.Scripts.Base;
+using Xdd.Scripts.Cards;
+using Xdd.Scripts.Hands;
+using Xdd.Scripts.UI;
 
-namespace Assets.Source.Scripts.BlackJack
+[assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
+namespace Xdd.Scripts.BlackJack
 {
-    public class GameScript : MonoBehaviour
+    internal class GameScript : MonoBehaviour
     {
         public event Action OnDealtEnd;
         public event Action<float> OnGameResult;
@@ -53,7 +55,7 @@ namespace Assets.Source.Scripts.BlackJack
             this.cycle = cycle;
             this.user = user;
 
-            controller.dealerHand.User.OnCardAdd += (card) => OnCardAdd(dealerHand, card);
+            controller.dealerHand.player.OnCardAdd += (card) => OnCardAdd(dealerHand, card);
             controller.OnDillerUpHiddenCard += (card) => OnDillerUpHiddenCard(card);
             dealerHand.GetComponent<BJHandScript>().Hand = controller.dealerHand;
             controller.OnGameEnd += async () => await OnGameEnd();
@@ -79,11 +81,11 @@ namespace Assets.Source.Scripts.BlackJack
             for (int i = 0; i < handCount; i++)
             {
                 var hand = bysyHands.Hands[i];
-                var player = user.hands[i];
+                var player = user.Hands[i];
 
                 var storage = hand.GetComponent<HandStorageScript>();
                 var bjHand = hand.GetComponent<BJHandScript>();
-                player.User.OnCardAdd += (card) =>
+                player.player.OnCardAdd += (card) =>
                 {
                     OnCardAdd(storage, card);
                     bjHand.InvokeOnCardsChange();

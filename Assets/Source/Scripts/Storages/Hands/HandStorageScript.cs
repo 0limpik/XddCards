@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Assets.Source.Scripts.Cards;
 using UnityEngine;
+using Xdd.Scripts.Base;
+using Xdd.Scripts.Cards;
 
-namespace Assets.Source.Scripts.Hands
+namespace Xdd.Scripts.Hands
 {
     internal class HandStorageScript : MonoBehaviour
     {

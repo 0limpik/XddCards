@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Source.Model.Cash;
-using Assets.Source.Model.Cycles.BlackJack.Controllers;
+using Xdd.Model.Cash;
+using Xdd.Model.Cycles.BlackJack.Controllers;
 
-namespace Assets.Source.Model.Cycles.BlackJack
+namespace Xdd.Model.Cycles.BlackJack
 {
     public class User
     {
         public event Action OnBet;
 
-        public Wallet wallet;
-        public decimal amount { get; internal set; }
-        public List<Hand> hands = new List<Hand>();
+        internal Wallet wallet;
+
+        public decimal Cash => wallet.Cash;
+        public decimal Amount { get; internal set; }
+
+        internal List<Hand> hands = new List<Hand>();
+        public IReadOnlyList<Hand> Hands => hands;
 
         internal HandController handController;
         internal BetController betController;
@@ -31,6 +35,7 @@ namespace Assets.Source.Model.Cycles.BlackJack
         {
             handController.Release(this);
         }
+
         public bool CanBet(decimal amount)
         {
             return betController.CanBet(this, amount);

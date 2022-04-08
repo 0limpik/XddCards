@@ -1,13 +1,14 @@
 ﻿using System.IO;
 using System.Linq;
-using Assets.Source.Model.Enums;
-using Assets.Source.Model.Games;
 using UnityEditor;
 using UnityEngine;
+using Xdd.Model.Enums;
+using Xdd.Model.Games;
+using Xdd.Scripts.Cards;
 
 namespace Assets.Editor.EditorWindows
 {
-    public class CardFromMaterialCreator : EditorWindow
+    internal class CardFromMaterialCreator : EditorWindow
     {
         private DefaultAsset importFolder;
         private DefaultAsset exportFolder;

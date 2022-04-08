@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using Assets.Source.Scripts.Base;
-using Assets.Source.Scripts.BlackJack;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Xdd.Scripts.Base;
+using Xdd.Scripts.BlackJack;
 
-namespace Assets.Source.Scripts.UI
+namespace Xdd.Scripts.UI
 {
     [RequireComponent(typeof(UIDocument))]
     internal class HandUIScript : MonoBehaviour

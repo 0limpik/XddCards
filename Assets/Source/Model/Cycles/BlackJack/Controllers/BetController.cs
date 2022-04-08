@@ -1,37 +1,37 @@
 ﻿using System;
 using System.Linq;
 
-namespace Assets.Source.Model.Cycles.BlackJack.Controllers
+namespace Xdd.Model.Cycles.BlackJack.Controllers
 {
-    public class BetController : State
+    public class BetController : AState
     {
-        private const string c_playerHasTBets = "At least one player must have a bet";
+        private const string c_userHasTBets = "At least one player must have a bet";
 
-        private User[] players;
+        private User[] users;
 
-        public decimal Amount => players.First().amount;
-        public decimal HandCount => players.First().hands.Count;
+        public decimal Amount => users.First().Amount;
+        public decimal HandCount => users.First().hands.Count;
 
-        internal BetController(User[] players)
+        internal BetController(User[] users)
         {
-            this.players = players;
+            this.users = users;
         }
 
-        internal bool CanBet(User player, decimal amount)
+        internal bool CanBet(User user, decimal amount)
         {
-            Check(player);
+            Check(user);
 
-            return player.wallet.CanReserve(amount * player.hands.Count);
+            return user.wallet.CanReserve(amount * user.hands.Count);
         }
 
-        internal void Bet(User player, decimal amount)
+        internal void Bet(User user, decimal amount)
         {
-            Check(player);
+            Check(user);
 
-            if (!player.wallet.CanReserve(amount * player.hands.Count))
+            if (!user.wallet.CanReserve(amount * user.hands.Count))
                 throw new ArgumentException("bet can't reserve");
 
-            player.amount = amount;
+            user.Amount = amount;
         }
 
         protected override void Enter()
@@ -41,47 +41,41 @@ namespace Assets.Source.Model.Cycles.BlackJack.Controllers
 
         protected override void Exit()
         {
-            foreach (var player in players)
+            foreach (var user in users)
             {
-                if (player.amount > 0)
-                    foreach (var hand in player.hands)
+                if (user.Amount > 0)
+                    foreach (var hand in user.hands)
                     {
-                        hand.bet = player.wallet.Reserve(player.amount);
+                        hand.bet = user.wallet.Reserve(user.Amount);
                     }
 
-                player.amount = 0;
+                user.Amount = 0;
             }
 
-            if (players.SelectMany(x => x.hands).All(x => !x.HasBet))
-                throw new Exception(c_playerHasTBets);
+            if (users.SelectMany(x => x.hands).All(x => !x.HasBet))
+                throw new Exception(c_userHasTBets);
 
-        }
-
-        public override bool CanEnter(out string message)
-        {
-            message = null;
-            return true;
         }
 
         public override bool CanExit(out string message)
         {
-            if (players.Any(x => x.amount > 0))
+            if (users.Any(x => x.Amount > 0))
             {
                 message = null;
                 return true;
             }
             else
             {
-                message = c_playerHasTBets;
+                message = c_userHasTBets;
                 return false;
             }
         }
 
-        private void Check(User player)
+        private void Check(User user)
         {
             CheckExecute();
 
-            if (!players.Contains(player))
+            if (!users.Contains(user))
                 throw new ArgumentException();
         }
     }

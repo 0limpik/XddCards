@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using Xdd.Scripts.Cards;
 
 namespace Assets.Editor.CustomEditors
 {

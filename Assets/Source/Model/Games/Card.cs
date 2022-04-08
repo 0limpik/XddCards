@@ -1,6 +1,6 @@
-﻿using Assets.Source.Model.Enums;
+﻿using Xdd.Model.Enums;
 
-namespace Assets.Source.Model.Games
+namespace Xdd.Model.Games
 {
     public class Card : ICard
     {

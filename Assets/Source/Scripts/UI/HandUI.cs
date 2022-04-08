@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Assets.Source.Model.Games;
-using Assets.Source.Model.Games.BlackJack;
-using Assets.Source.Scripts.BlackJack;
-using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
+using Xdd.Model.Games;
+using Xdd.Model.Games.BlackJack;
+using Xdd.Scripts.BlackJack;
 using Xdd.UI.Elements;
 
-namespace Assets.Source.Scripts.UI
+namespace Xdd.Scripts.UI
 {
     internal class HandUI
     {
@@ -93,12 +92,12 @@ namespace Assets.Source.Scripts.UI
             {
                 if (hand != null)
                 {
-                    hand.User.OnCardAdd -= User_OnCardAdd;
+                    hand.player.OnCardAdd -= User_OnCardAdd;
                 }
 
-                if (handScript.Hand?.User != null)
+                if (handScript.Hand?.player != null)
                 {
-                    handScript.Hand.User.OnCardAdd += User_OnCardAdd;
+                    handScript.Hand.player.OnCardAdd += User_OnCardAdd;
                 }
             };
 
@@ -106,7 +105,7 @@ namespace Assets.Source.Scripts.UI
             handScript.OnTurn += (turn) =>
             {
                 if (turn == BJTurn.Stand || turn == BJTurn.DoubleUp)
-                    Actions = handScript.Hand.User.CanTurn;
+                    Actions = handScript.Hand.player.CanTurn;
             };
             handScript.OnBet += () =>
             {
@@ -127,10 +126,10 @@ namespace Assets.Source.Scripts.UI
         {
             Score = handScript.cards.Count > 0;
 
-            if (handScript.Hand?.User == null)
+            if (handScript.Hand?.player == null)
                 return;
 
-            Actions = handScript.Hand.User.CanTurn;
+            Actions = handScript.Hand.player.CanTurn;
             var scores = GameScores.GetBlackJackScores(handScript.cards);
 
             if (scores.Count() > 0)
@@ -154,10 +153,10 @@ namespace Assets.Source.Scripts.UI
 
         private bool SetResult()
         {
-            if (handScript.Hand?.User == null)
+            if (handScript.Hand?.player == null)
                 return false;
 
-            var status = handScript.Hand.User.GetStatus().ToString();
+            var status = handScript.Hand.player.GetStatus().ToString();
 
             if (string.IsNullOrEmpty(status))
                 return false;

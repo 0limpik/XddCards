@@ -1,11 +1,12 @@
 ﻿using System;
-using Assets.Source.Scripts.Peek;
 using UnityEngine;
+using Xdd.Scripts.Base;
+using Xdd.Scripts.Take;
 
-namespace Assets.Source.Scripts.BlackJack.Hands
+namespace Xdd.Scripts.Hands
 {
     [RequireComponent(typeof(TakeObjectScript))]
-    public class HandScript : MonoBehaviour
+    internal class HandScript : MonoBehaviour
     {
         public event Action OnInteraction;
 

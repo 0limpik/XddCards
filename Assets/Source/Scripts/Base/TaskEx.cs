@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Source.Scripts.Base
+namespace Xdd.Scripts.Base
 {
-    public static class TaskEx
+    internal static class TaskEx
     {
         public static async Task Delay(float delay)
         {

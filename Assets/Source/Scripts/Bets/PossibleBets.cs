@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.Source.Scripts.Bets
+namespace Xdd.Scripts.Bets
 {
     [CreateAssetMenu(fileName = "PossibleBets", menuName = "Xdd/BETS/PossibleBets", order = 13)]
-    public class PossibleBets : ScriptableObject
+    internal class PossibleBets : ScriptableObject
     {
         [field: SerializeField]
         public string betsPostfix { get; private set; }
@@ -14,7 +14,7 @@ namespace Assets.Source.Scripts.Bets
     }
 
     [Serializable]
-    public class PossibleBet
+    internal class PossibleBet
     {
         public decimal Amount => (decimal)_Amount;
         [SerializeField]

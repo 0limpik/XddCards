@@ -1,12 +1,12 @@
-﻿using Assets.Source.Model.Cash;
-using Assets.Source.Model.Cycles.BlackJack.Controllers;
-using Assets.Source.Model.Games.BlackJack.Users;
+﻿using Xdd.Model.Cash;
+using Xdd.Model.Cycles.BlackJack.Controllers;
+using Xdd.Model.Games.BlackJack.Users;
 
-namespace Assets.Source.Model.Cycles.BlackJack
+namespace Xdd.Model.Cycles.BlackJack
 {
     public class Hand
     {
-        public IPlayer User;
+        public IPlayer player;
 
         public decimal Amount => bet == null ? 0 : doubleBet == null ? bet.Amount : bet.Amount + doubleBet.Amount;
 
@@ -18,17 +18,17 @@ namespace Assets.Source.Model.Cycles.BlackJack
 
         public void Hit()
         {
-            gameController.Hit(User);
+            gameController.Hit(player);
         }
 
         public void Stand()
         {
-            gameController.Stand(User);
+            gameController.Stand(player);
         }
 
         public void DoubleUp()
         {
-            gameController.DoubleUp(User);
+            gameController.DoubleUp(player);
         }
     }
 }

@@ -1,50 +1,53 @@
 using UnityEngine;
 
-public class LastRaycastScript : MonoBehaviour
+namespace Xdd.Scripts.Base
 {
-    private Camera _camera;
-
-    public static GameObject underMouse;
-    public static GameObject underMouseLeftClick;
-    public static GameObject underMouseRightClick;
-
-    void Awake()
+    internal class LastRaycastScript : MonoBehaviour
     {
-        _camera = Camera.main;
+        private Camera _camera;
 
-        if (Object.FindObjectsOfType<LastRaycastScript>().Length > 1)
-            throw new System.Exception("One script per scene");
-    }
+        public static GameObject underMouse;
+        public static GameObject underMouseLeftClick;
+        public static GameObject underMouseRightClick;
 
-    void Update()
-    {
-        var ray = _camera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        void Awake()
         {
-            underMouse = hit.collider.gameObject;
+            _camera = Camera.main;
 
-            if (Input.GetMouseButton(0))
+            if (Object.FindObjectsOfType<LastRaycastScript>().Length > 1)
+                throw new System.Exception("One script per scene");
+        }
+
+        void Update()
+        {
+            var ray = _camera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                underMouseLeftClick = hit.collider.gameObject;
+                underMouse = hit.collider.gameObject;
+
+                if (Input.GetMouseButton(0))
+                {
+                    underMouseLeftClick = hit.collider.gameObject;
+                }
+                else
+                {
+                    underMouseLeftClick = null;
+                }
+                if (Input.GetMouseButton(1))
+                {
+                    underMouseRightClick = hit.collider.gameObject;
+                }
+                else
+                {
+                    underMouseRightClick = null;
+                }
             }
             else
             {
+                underMouse = null;
                 underMouseLeftClick = null;
-            }
-            if (Input.GetMouseButton(1))
-            {
-                underMouseRightClick = hit.collider.gameObject;
-            }
-            else
-            {
                 underMouseRightClick = null;
             }
-        }
-        else
-        {
-            underMouse = null;
-            underMouseLeftClick = null;
-            underMouseRightClick = null;
         }
     }
 }

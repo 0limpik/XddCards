@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Source.Model.Cash;
-using Assets.Source.Model.Cycles.BlackJack.Controllers;
 using UnityEngine;
+using Xdd.Model.Cash;
+using Xdd.Model.Cycles.BlackJack.Controllers;
 
-namespace Assets.Source.Model.Cycles.BlackJack
+namespace Xdd.Model.Cycles.BlackJack
 {
     public class BJCycle
     {
-        public event Action<State> OnStateChange;
+        public event Action<AState> OnStateChange;
 
-        private User[] players;
+        private User[] users;
         private List<Hand> hands;
 
-        public User[] Players => players.ToArray();
+        public User[] Users => users.ToArray();
         public Hand[] Hands => hands.ToArray();
 
         public HandController handController { get; private set; }
         public BetController betController { get; private set; }
         public GameController gameController { get; private set; }
 
-        private IEnumerable<State> States
+        private IEnumerable<AState> States
         {
             get
             {
@@ -33,12 +33,12 @@ namespace Assets.Source.Model.Cycles.BlackJack
 
         public void Init(Wallet[] wallets, int handCount)
         {
-            players = new User[wallets.Length];
+            users = new User[wallets.Length];
             hands = new(handCount);
 
             for (int i = 0; i < wallets.Length; i++)
             {
-                players[i] = new User(wallets[i]);
+                users[i] = new User(wallets[i]);
             }
 
             foreach (var i in Enumerable.Range(0, handCount))
@@ -58,7 +58,7 @@ namespace Assets.Source.Model.Cycles.BlackJack
         public bool CanSwitchState(out string message)
         {
             message = null;
-            State prevState = gameController;
+            AState prevState = gameController;
             foreach (var state in States)
             {
                 if (prevState.IsExecute)
@@ -77,7 +77,7 @@ namespace Assets.Source.Model.Cycles.BlackJack
 
         public void SwitchState()
         {
-            State prevState = gameController;
+            AState prevState = gameController;
             foreach (var state in States)
             {
                 if (prevState.IsExecute)
@@ -94,17 +94,17 @@ namespace Assets.Source.Model.Cycles.BlackJack
 
         public void Reset()
         {
-            handController = new HandController(players, hands);
-            betController = new BetController(players);
-            gameController = new GameController(players);
+            handController = new HandController(users, hands);
+            betController = new BetController(users);
+            gameController = new GameController(users);
 
-            foreach (var player in players)
+            foreach (var user in users)
             {
-                player.handController = handController;
-                player.betController = betController;
-                player.gameController = gameController;
+                user.handController = handController;
+                user.betController = betController;
+                user.gameController = gameController;
 
-                foreach (var hand in player.hands)
+                foreach (var hand in user.hands)
                 {
                     hand.gameController = gameController;
                 }

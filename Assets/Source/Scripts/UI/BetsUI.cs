@@ -2,21 +2,18 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Assets.Source.Model.Cycles.BlackJack;
-using Assets.Source.Model.Cycles.BlackJack.Controllers;
-using Assets.Source.Scripts.Bets;
-using Assets.Source.Scripts.BlackJack;
-using Assets.Source.Scripts.Hands;
-using Assets.Source.Scripts.UI.BlackJack;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.XR;
+using Xdd.Model.Cycles.BlackJack;
+using Xdd.Model.Cycles.BlackJack.Controllers;
+using Xdd.Scripts.Bets;
+using Xdd.Scripts.UI.BlackJack;
 using Xdd.UI.Elements;
 
-namespace Assets.Source.Scripts.UI
+namespace Xdd.Scripts.UI
 {
     [RequireComponent(typeof(UIDocument))]
-    public class BetsUI : MonoBehaviour, ICycleRequired
+    internal class BetsUI : MonoBehaviour, ICycleRequired
     {
         public event Action<decimal> OnBetChange;
 

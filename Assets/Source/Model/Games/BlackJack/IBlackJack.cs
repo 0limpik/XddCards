@@ -1,7 +1,7 @@
 ﻿using System;
-using Assets.Source.Model.Games.BlackJack.Users;
+using Xdd.Model.Games.BlackJack.Users;
 
-namespace Assets.Source.Model.Games.BlackJack
+namespace Xdd.Model.Games.BlackJack
 {
     public interface IBlackJack
     {

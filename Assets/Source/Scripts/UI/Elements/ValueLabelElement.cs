@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace Xdd.UI.Elements
 {
-    public class ValueLabelElement : VisualElement
+    internal class ValueLabelElement : VisualElement
     {
         private static readonly string d_ValueName = "Name Abc123";
         private static readonly string d_Value = "00000";

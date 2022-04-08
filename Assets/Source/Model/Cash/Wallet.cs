@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Source.Model.Cash
+namespace Xdd.Model.Cash
 {
     public class Wallet
     {

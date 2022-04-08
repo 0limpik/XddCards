@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.Source.Scripts.Peek
+namespace Xdd.Scripts.Take
 {
     [CreateAssetMenu(fileName = "Take", menuName = "Xdd/TAKE/Object", order = 21)]
-    public class TakeObject : ScriptableObject
+    internal class TakeObject : ScriptableObject
     {
         [SerializeField] private TakeStateParam available;
         [SerializeField] private TakeStateParam busy;
@@ -15,7 +15,7 @@ namespace Assets.Source.Scripts.Peek
     }
 
     [Serializable]
-    public class TakeStateParam
+    internal class TakeStateParam
     {
         public Material material;
         public Color lightColor;
@@ -23,7 +23,7 @@ namespace Assets.Source.Scripts.Peek
         public TakeState state;
     }
 
-    public enum TakeState
+    internal enum TakeState
     {
         Available,
         Busy,

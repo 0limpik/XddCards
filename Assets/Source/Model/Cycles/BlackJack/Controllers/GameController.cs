@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
-using Assets.Source.Model.Cash;
-using Assets.Source.Model.Games;
-using Assets.Source.Model.Games.BlackJack;
-using Assets.Source.Model.Games.BlackJack.Users;
+using Xdd.Model.Cash;
+using Xdd.Model.Games;
+using Xdd.Model.Games.BlackJack;
+using Xdd.Model.Games.BlackJack.Users;
 
-namespace Assets.Source.Model.Cycles.BlackJack.Controllers
+namespace Xdd.Model.Cycles.BlackJack.Controllers
 {
-    public class GameController : State
+    public class GameController : AState
     {
-        private const string c_playerCount = "Players must be more 0";
+        private const string c_usersCount = "Players must be more 0";
 
         private IBlackJack game = new Game();
 
@@ -27,15 +27,15 @@ namespace Assets.Source.Model.Cycles.BlackJack.Controllers
 
         public Hand dealerHand { get; private set; }
 
-        private User[] players;
+        private User[] users;
 
         private IPlayer[] Players => game.players;
 
-        internal GameController(User[] players)
+        internal GameController(User[] users)
         {
-            this.players = players;
+            this.users = users;
 
-            dealerHand = new Hand { User = game.dealer };
+            dealerHand = new Hand { player = game.dealer };
         }
 
         public void Start()
@@ -58,15 +58,15 @@ namespace Assets.Source.Model.Cycles.BlackJack.Controllers
         public void DoubleUp(IPlayer player)
         {
             CheckExecute();
-            foreach (var play in players)
+            foreach (var user in users)
             {
-                foreach (var hand in play.hands)
+                foreach (var hand in user.hands)
                 {
-                    if (hand.User == player)
+                    if (hand.player == player)
                     {
-                        if (play.wallet.CanReserve(hand.bet.Amount))
+                        if (user.wallet.CanReserve(hand.bet.Amount))
                         {
-                            hand.doubleBet = play.wallet.Reserve(hand.bet.Amount);
+                            hand.doubleBet = user.wallet.Reserve(hand.bet.Amount);
                         }
                         else
                         {
@@ -84,19 +84,19 @@ namespace Assets.Source.Model.Cycles.BlackJack.Controllers
 
         protected override void Enter()
         {
-            game.Init(players
+            game.Init(users
             .SelectMany(x => x.hands)
             .Where(x => x.HasBet)
             .Count());
 
             var playerCount = 0;
 
-            foreach (var player in players)
+            foreach (var player in users)
             {
                 foreach (var hand in player.hands)
                 {
                     var user = game.players[playerCount++];
-                    hand.User = user;
+                    hand.player = user;
 
                     user.OnResult += (result) => OnResult(result, player, hand);
                 }
@@ -138,18 +138,6 @@ namespace Assets.Source.Model.Cycles.BlackJack.Controllers
                 }
                 throw new Exception($"uninspected {nameof(GameResult)}");
             }
-        }
-
-        public override bool CanEnter(out string message)
-        {
-            message = null;
-            return true;
-        }
-
-        public override bool CanExit(out string message)
-        {
-            message = null;
-            return true;
         }
     }
 }

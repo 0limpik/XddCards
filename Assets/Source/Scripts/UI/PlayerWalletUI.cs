@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
-using Assets.Source.Model.Cycles.BlackJack;
-using Assets.Source.Model.Cycles.BlackJack.Controllers;
-using Assets.Source.Scripts.BlackJack;
-using Assets.Source.Scripts.UI.BlackJack;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Xdd.Model.Cycles.BlackJack;
+using Xdd.Model.Cycles.BlackJack.Controllers;
+using Xdd.Scripts.BlackJack;
+using Xdd.Scripts.UI.BlackJack;
 using Xdd.UI.Elements;
 
-namespace Assets.Source.Scripts.UI
+namespace Xdd.Scripts.UI
 {
     [RequireComponent(typeof(UIDocument))]
     internal class PlayerWalletUI : MonoBehaviour, ICycleRequired
@@ -38,7 +38,7 @@ namespace Assets.Source.Scripts.UI
 
         private BJCycle cycle;
         private BetController controller => cycle.betController;
-        private User Player => cycle.Players.First();
+        private User Player => cycle.Users.First();
 
         void Awake()
         {
@@ -62,17 +62,17 @@ namespace Assets.Source.Scripts.UI
         {
             this.cycle = cycle;
             cycle.gameController.OnChangeExecute += Game_OnChangeExecute;
-            gameScript.OnGameResult += (_) => Cash = Player.wallet.Cash;
-            Cash = Player.wallet.Cash;
+            gameScript.OnGameResult += (_) => Cash = Player.Cash;
+            Cash = Player.Cash;
             TotalBet = 0;
         }
 
         private void Game_OnChangeExecute(bool execute)
         {
-            Cash = Player.wallet.Cash;
+            Cash = Player.Cash;
             if (execute)
             {
-                _StartCash = Player.wallet.Cash;
+                _StartCash = Player.Cash;
             }
             else
             {

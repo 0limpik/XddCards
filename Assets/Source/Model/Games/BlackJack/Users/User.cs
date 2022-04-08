@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Source.Model.Games.BlackJack.Users
+namespace Xdd.Model.Games.BlackJack.Users
 {
     internal abstract class User : IPlayer
     {
@@ -18,7 +18,6 @@ namespace Assets.Source.Model.Games.BlackJack.Users
         {
             this.GetScoresIternal = GetScores;
         }
-        public abstract PlayerStatus? GetStatus();
 
         public virtual void AddCard(Card card)
         {
@@ -57,6 +56,7 @@ namespace Assets.Source.Model.Games.BlackJack.Users
         protected void InvokeOnCardAdd(Card card)
             => OnCardAdd?.Invoke(card);
 
+        public abstract PlayerStatus? GetStatus();
     }
 
     public enum PlayerStatus

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Source.Model.Games.BlackJack.Users
+namespace Xdd.Model.Games.BlackJack.Users
 {
     internal class Dealer : User
     {
