@@ -1,102 +1,64 @@
-using System.Collections.Generic;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
-using Assets.Source.Scripts.Cash;
-using Assets.Source.Scripts.UI;
+using Assets.Source.Model.Cycles.BlackJack;
+using Assets.Source.Model.Cycles.BlackJack.Controllers;
+using Assets.Source.Scripts.UI.BlackJack;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[ExecuteAlways]
-[RequireComponent(typeof(UIDocument))]
-public class GameUIScript : MonoBehaviour
+namespace Assets.Source.Scripts.UI
 {
-    private UIDocument document => _document ??= this.GetComponent<UIDocument>();
-    private UIDocument _document;
-
-    [SerializeField] private VisualTreeAsset playerDocument;
-
-    Camera Camera => _Camera ??= Camera.main;
-    Camera _Camera;
-
-    public float gameResultDelayPerUser;
-
-    private Label centerMessage;
-    private Label cashLabel;
-    private Label betLabel;
-
-    void Awake()
+    [RequireComponent(typeof(UIDocument))]
+    public class GameUIScript : MonoBehaviour, ICycleRequired
     {
-        centerMessage = document.rootVisualElement.Q<Label>("center-message");
-        cashLabel = document.rootVisualElement.Q<Label>("cash-count");
-        betLabel = document.rootVisualElement.Q<Label>("bet-count");
-    }
+        private UIDocument document;
 
-    public async void DisplayMessage(string message, Color? color = null)
-    {
-        centerMessage.text = message;
-        centerMessage.style.color = color ?? Color.white;
-        await Task.Delay(3000);
-        centerMessage.text = null;
-    }
+        public float gameResultDelayPerUser;
 
-    private List<HandUI> handUIs = new List<HandUI>();
+        private Label centerMessage;
+        private VisualElement betsContainer;
 
-    public void RegisterHand(BJHandScript hand)
-    {
-        var tree = playerDocument.CloneTree();
+        private BetController controller => cycle.betController;
+        private BJCycle cycle;
 
-        var handUI = new HandUI(hand, tree);
-
-        handUIs.Add(handUI);
-
-        document.rootVisualElement.Add(tree);
-
-        var container = tree.Q("container");
-
-        var screenPos = WorldToScreenSpace(hand.transform.position);
-
-        tree.RegisterCallback<GeometryChangedEvent>((x) =>
+        void Awake()
         {
-            var width = container.resolvedStyle.width;
-            var height = container.resolvedStyle.height;
+            document = this.GetComponent<UIDocument>();
 
-            tree.style.left = screenPos.x - width / 2;
-            tree.style.top = screenPos.y - height / 2;
-        });
-    }
+            var tree = document.rootVisualElement;
 
-    public async Task ShowResults()
-    {
-        handUIs.ForEach(x => x.Result = true);
-        await TaskEx.Delay(handUIs.Count * gameResultDelayPerUser);
-        handUIs.ForEach(x => x.Result = false);
-    }
+            centerMessage = tree.Q<Label>("center-message") ?? throw new ArgumentException();
 
-    public void RegisterWallet(PlayerWallet wallet)
-    {
-        wallet.OnChange += () =>
+            betsContainer = tree.Q("bet") ?? throw new ArgumentException();
+            betsContainer.style.display = DisplayStyle.None;
+        }
+
+        public void InitCycle(BJCycle cycle, User user)
         {
-            cashLabel.text = wallet.Cash.ToString();
-            betLabel.text = wallet.AllBets.ToString();
-        };
-    }
+            this.cycle = cycle;
 
-    private Vector2 WorldToScreenSpace(Vector3 position)
-    {
-        var screenPointPosition = Camera.WorldToScreenPoint(position);
-        var viewPortPoint = Camera.ScreenToViewportPoint(screenPointPosition);
-        var referenceResolution = new Vector2(Screen.width, Screen.height);
+            controller.OnChangeExecute += OnChangeExecute;
 
-        var screenPosition = new Vector2(
-            viewPortPoint.x * referenceResolution.x,
-            referenceResolution.y - viewPortPoint.y * referenceResolution.y);
+            this.GetComponents<ICycleRequired>()
+                .Where(x => x != this as ICycleRequired)
+                .ToList()
+                .ForEach(component => component.InitCycle(cycle, user));
 
-        var scale = GetCanvasScaleFactor(document.panelSettings);
+            betsContainer.style.display = DisplayStyle.None;
+        }
 
-        return screenPosition / scale;
-    }
+        private void OnChangeExecute(bool execute)
+        {
+            betsContainer.style.display = execute ? DisplayStyle.Flex : DisplayStyle.None;
+        }
 
-    public static float GetCanvasScaleFactor(PanelSettings panelSettings)
-    {
-        return ((float)Screen.width / panelSettings.referenceResolution.x) * (1 - panelSettings.match) + ((float)Screen.height / panelSettings.referenceResolution.y) * (panelSettings.match);
+        public async void DisplayMessage(string message, Color? color = null)
+        {
+            centerMessage.text = message ?? "null";
+            centerMessage.style.color = color ?? Color.white;
+            await Task.Delay(3000);
+            centerMessage.text = null;
+        }
     }
 }

@@ -1,174 +1,159 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Assets.Source.Model.Cycles.BlackJack;
+using Assets.Source.Model.Cycles.BlackJack.Controllers;
 using Assets.Source.Model.Games;
-using Assets.Source.Model.Games.BlackJack;
-using Assets.Source.Scripts.BlackJack;
+using Assets.Source.Scripts.Base;
+using Assets.Source.Scripts.Cards;
+using Assets.Source.Scripts.Hands;
+using Assets.Source.Scripts.UI;
 using UnityEngine;
 
-public class GameScript : MonoBehaviour
+namespace Assets.Source.Scripts.BlackJack
 {
-    public IBlackJack game;
-    [SerializeField] BJHandScript[] playerHands;
-    [SerializeField] BJHandScript dillerHand;
-    [SerializeField] CardCollection cardCollection;
-
-    [SerializeField] PlayerAction playerAction;
-    [SerializeField] DeckScript trashDeck;
-
-    [SerializeField] CardMono cardInstanse;
-
-    private CardMono dillerHiddenCard;
-
-    public CardsSequenceScript sequence;
-
-    private List<CardMono> allCards = new List<CardMono>();
-
-    private List<GameResult> gameResults = new List<GameResult>();
-
-    [SerializeField] private CardsManager cardsManager = new CardsManager();
-
-    private Task cardTranslate = Task.CompletedTask;
-
-    void Awake()
+    public class GameScript : MonoBehaviour
     {
-        var playerCount = playerHands.Length;
+        public event Action OnDealtEnd;
+        public event Action<float> OnGameResult;
+        public event Action OnDealerUpCard;
 
-        game = new Game();
+        public float afterResultDelay;
 
-        game.Init(6);
+        private GameController controller => cycle.gameController;
+        private User user;
+        private BJCycle cycle;
 
-        for (int i = 0; i < playerCount; i++)
+        [SerializeField]
+        private CardCollection cardCollection;
+
+        [SerializeField]
+        private GameUIScript uiScript;
+
+        [SerializeField]
+        private BusyHandsScript bysyHands;
+
+        [SerializeField]
+        private HandStorageScript dealerHand;
+        private CardMono dealerHiddenCard;
+
+        [SerializeField]
+        private DeckScript trashDeck;
+
+        [SerializeField]
+        public TaskQueue manager = new TaskQueue();
+
+        private List<CardMono> allCards = new List<CardMono>();
+
+        private bool game;
+
+        public void InitCycle(BJCycle cycle, User user)
         {
-            var player = game.players[i];
-            var playerHand = playerHands[i];
-            player.OnCardAdd += (card) => OnCardAdd(card, playerHand);
-            player.OnResult += (result) => gameResults.Add(result);
-            ///player.OnEnd += () => playerHand.SetAction(false);
-            //playerHand.user = player;
+            this.cycle = cycle;
+            this.user = user;
+
+            controller.dealerHand.User.OnCardAdd += (card) => OnCardAdd(dealerHand, card);
+            controller.OnDillerUpHiddenCard += (card) => OnDillerUpHiddenCard(card);
+            dealerHand.GetComponent<BJHandScript>().Hand = controller.dealerHand;
+            controller.OnGameEnd += async () => await OnGameEnd();
+            controller.OnChangeExecute += OnChangeExecute;
         }
 
-        game.dealer.OnCardAdd += (card) => OnCardAdd(card, dillerHand);
-        game.OnDillerUpHiddenCard += OnDillerUpHiddenCard;
-        //dillerHand.user = game.dealer;
-
-        game.OnGameEnd += OnGameEnd;
-    }
-
-    void Start()
-    {
-        foreach (var playerHand in playerHands)
+        private void OnChangeExecute(bool execute)
         {
-            //playerAction.uiScript.RegisterPlayer(playerHand, game);
+            if (execute)
+            {
+                StartGame();
+            }
         }
 
-        //playerAction.uiScript.RegisterDiller(dillerHand);
-
-        StartGame();
-    }
-
-    private async void OnCardAdd(Card card, ICardStorage storage)
-    {
-        var cardMono = CreateCard(card);
-
-        await Wait();
-
-        //cardTranslate = cardsManager.MoveCard(new CardTranslateItem { card = cardMono, storage = storage });
-    }
-
-    private async void OnDillerUpHiddenCard(Card card)
-    {
-        dillerHiddenCard ??= CreateCard(card);
-        dillerHiddenCard.card = cardCollection.GetCardObject(card);
-        dillerHiddenCard.transform.rotation = Quaternion.AngleAxis(180, Vector3.forward);
-
-        await Wait();
-
-       // cardTranslate = cardsManager.FlipCard(dillerHiddenCard);
-        //dillerHand.UpdateScores();
-    }
-
-    private async void OnGameEnd()
-    {
-        await Wait();
-
-        //playerAction.NotifyGameResult(result);
-        //playerAction.uiScript.ShowResults(game);
-        await TaskEx.Delay(2.5f);
-
-        playerAction.NotifyGameResult(gameResults.ToArray());
-        gameResults.Clear();
-
-        foreach (var playerHand in playerHands)
+        private void StartGame()
         {
-            playerHand.ClearCards();
+            game = true;
+
+            var handCount = bysyHands.Hands.Length;
+
+            bysyHands.AllHands.ToList().ForEach(x => x.GetComponent<BJHandScript>().Hand = null);
+
+            for (int i = 0; i < handCount; i++)
+            {
+                var hand = bysyHands.Hands[i];
+                var player = user.hands[i];
+
+                var storage = hand.GetComponent<HandStorageScript>();
+                var bjHand = hand.GetComponent<BJHandScript>();
+                player.User.OnCardAdd += (card) =>
+                {
+                    OnCardAdd(storage, card);
+                    bjHand.InvokeOnCardsChange();
+                };
+                bjHand.Hand = player;
+                bjHand.Bet(player.Amount);
+            }
+
+            controller.Start();
+
+            dealerHiddenCard = CreateCard(null);
+            dealerHiddenCard.transform.rotation = Quaternion.AngleAxis(180f, Vector3.forward);
+            dealerHand.AddCard(manager, dealerHiddenCard).OnEnd +=
+                (x) => OnDealtEnd?.Invoke();
         }
 
-        dillerHand.ClearCards();
-
-        //await cardsManager.MoveCard(allCards.Select(x => new CardTranslateItem { card = x, storage = trashDeck }).ToArray());
-
-        allCards.Clear();
-
-        await TaskEx.Delay(1.5f);
-
-        StartGame();
-    }
-
-    private CardMono CreateCard(Card card)
-    {
-        var cardObject = cardCollection.GetCardObject(card);
-
-        var position = this.transform.position + Vector3.up * 0.01f * allCards.Count();
-
-        var cardMono = GameObject.Instantiate(this.cardInstanse, position, this.transform.rotation, this.transform);
-        cardMono.card = cardObject;
-
-        allCards.Add(cardMono);
-
-        return cardMono;
-    }
-
-    async void StartGame()
-    {
-        await Wait();
-
-        game.Start();
-
-        dillerHiddenCard = CreateCard(null);
-
-        await Wait();
-
-        //cardTranslate = cardsManager.MoveCard(new CardTranslateItem { card = dillerHiddenCard, storage = dillerHand });
-    }
-    public async Task Wait()
-    {
-        do
+        private void OnCardAdd(HandStorageScript hand, Card card)
         {
+            var cardMono = CreateCard(card);
+            hand.AddCard(manager, cardMono);
+        }
+
+        private CardMono CreateCard(Card card)
+        {
+            var transform = this.transform;
+            var position = transform.position;
+            var cardMono = cardCollection.CreateCardMono(card, position, transform.rotation, transform);
+            allCards.Add(cardMono);
+            return cardMono;
+        }
+
+        private void OnDillerUpHiddenCard(ICard card)
+        {
+            if (dealerHiddenCard == null)
+                dealerHiddenCard = CreateCard(null);
+
+            OnDealerUpCard?.Invoke();
+            dealerHiddenCard.card = cardCollection.GetCardObject(card);
+            dealerHiddenCard.Flip(manager);
+            manager.AddTask((x) => TaskEx.Delay(0.5f), name: "delay");
+        }
+
+        private async Task OnGameEnd()
+        {
+            await manager.WaitQueleEnd();
             await Task.Yield();
-        } while (!cardTranslate.IsCompleted);
+
+            OnGameResult?.Invoke(afterResultDelay);
+            await TaskEx.Delay(afterResultDelay);
+
+            foreach (var hand in bysyHands.Hands)
+            {
+                hand.GetComponent<HandStorageScript>().ClearCards();
+            }
+
+            dealerHand.ClearCards();
+
+            trashDeck.AddCard(manager, allCards.ToArray());
+            allCards.Clear();
+
+            game = false;
+        }
+
+        public async Task WaitEndGame()
+        {
+            do
+            {
+                await Task.Yield();
+            } while (game);
+        }
     }
 }
 
-public static class TaskEx
-{
-    public static async Task Delay(float delay)
-    {
-        var time = Time.timeAsDouble + delay;
-
-        while (time > Time.timeAsDouble)
-        {
-            await Task.Yield();
-        }
-    }
-
-    public static async Task Next(this Task task)
-    {
-        do
-        {
-            Debug.Log("Wait");
-            await Task.Yield();
-        } while (!task.IsCompleted);
-        Debug.Log("Release");
-    }
-}

@@ -13,7 +13,14 @@ public class CardObject : ScriptableObject, ICard
     public Ranks rank => _rank;
     [SerializeField] public Ranks _rank;
 
-
     public static float cardWidth = 3.25f;
+
+    public string ToString(string format)
+    {
+        if (format == "n")
+            return $"{suit} {rank}";
+
+        return ToString();
+    }
 }
 

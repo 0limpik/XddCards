@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static UnityEngine.GraphicsBuffer;
+﻿using UnityEditor;
 using UnityEngine;
-using UnityEditor;
 
 namespace Assets.Editor.CustomEditors
 {

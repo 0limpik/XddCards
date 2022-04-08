@@ -10,11 +10,13 @@ namespace Assets.Source.Model.Games.BlackJack
 
         bool isGame { get; }
 
-        IUser[] players { get; }
-        IUser dealer { get; }
+        IPlayer[] players { get; }
+        IPlayer dealer { get; }
 
         void Init(int playerCount);
         void Start();
-        void Turn(IUser user, BlackJackTurn turn);
+
+        void Hit(IPlayer player);
+        void Stand(IPlayer player);
     }
 }

@@ -1,0 +1,99 @@
+.chip_container {
+    width: 75px;
+    height: 75px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-width: 5px;
+    border-radius: 50%;
+    border-color: rgb(64, 64, 64);
+}
+
+.chip_image {
+    width: 135px;
+    height: 135px;
+    border-radius: 50%;
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+.chip_label {
+    padding: 0 4px;
+    margin: 5px 0 0 0;
+    font-size: 20px;
+    color: rgb(255, 160, 0);
+    background-color: rgb(64, 64, 64);
+    border-radius: 10px;
+    border-width: 3px;
+    border-color: rgba(128, 128, 128, 0.5);
+    -unity-font-style: bold;
+}
+
+.chip_button {
+    margin: 0;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0);
+    border-color: rgba(0, 0, 0, 0);
+    align-items: center;
+}
+
+.chip_button:hover {
+    margin: 0;
+    padding: 10px;
+    align-items: center;
+    border-color: rgba(0, 0, 0, 0);
+    background-color: rgba(255, 255, 0, 0.25);
+    border-radius: 55px;
+}
+
+ChipElement {
+    margin: 0;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0);
+    border-color: rgba(0, 0, 0, 0);
+    align-items: center;
+}
+
+ChipElement:hover {
+    margin: 0;
+    padding: 10px;
+    align-items: center;
+    border-color: rgba(0, 0, 0, 0);
+    background-color: rgba(255, 255, 0, 0.25);
+    border-radius: 55px;
+}
+
+ChipElement .image-container {
+    width: 75px;
+    height: 75px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-width: 5px;
+    border-radius: 50%;
+    border-color: rgb(64, 64, 64);
+}
+
+ChipElement .image-container .image {
+    width: 135px;
+    height: 135px;
+    border-radius: 50%;
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+ChipElement .value-container {
+    margin: 2px 0;
+    padding: 2px 4px;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: rgba(128, 128, 128, 0.5);
+    background-color: rgb(64, 64, 64);
+}
+
+ChipElement Label {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    color: rgb(255, 160, 0);
+    -unity-font-style: bold;
+    -unity-font-definition: url('project://database/Assets/UI/Fonts/Google%20Roboto/RobotoMono.asset?fileID=11400000&guid=d6fe2d6a7c8d1384e953b3932e94855e&type=2#RobotoMono');
+}

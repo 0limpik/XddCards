@@ -12,7 +12,7 @@ namespace Assets.Source.Model.Games
 
         public CardObject GetCardObject(ICard card)
         {
-            if(card == null)
+            if (card == null)
             {
                 return null;
             }

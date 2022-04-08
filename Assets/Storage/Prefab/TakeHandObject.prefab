@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3827244643589149324}
   - component: {fileID: 3827244643589149321}
   - component: {fileID: 1186164551514279945}
+  - component: {fileID: 6373060167055657179}
   - component: {fileID: 6439105093958297272}
   m_Layer: 0
   m_Name: TakeHandObject
@@ -113,6 +114,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76ed42cc46b4cac46989cc6d50b3f308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6373060167055657179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3827244643589149314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ef10a853c4878b479378eae310ece87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardsMono: []
+  moveTime: 1
 --- !u!64 &6439105093958297272
 MeshCollider:
   m_ObjectHideFlags: 0

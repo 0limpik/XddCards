@@ -1,0 +1,40 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/BlackJack/playerUI-styles.uss?fileID=7433441132597879392&amp;guid=2bf7089fa98338f41baecacf59efa2be&amp;type=3#playerUI-styles" />
+    <Style src="project://database/Assets/UI/Game/value-label-styles.uss?fileID=7433441132597879392&amp;guid=c5003e2a88e14d14e87b45fb77ee42f5&amp;type=3#value-label-styles" />
+    <Style src="project://database/Assets/UI/Game/chip-styles.uss?fileID=7433441132597879392&amp;guid=17e56cf106c050e43b0d6207cdebe7a8&amp;type=3#chip-styles" />
+    <ui:VisualElement name="left-top" style="position: absolute;">
+        <ui:VisualElement name="game-states" style="width: 222px; align-items: flex-start; margin-top: 50px;">
+            <Xdd.UI.Elements.ValueLabelElement value-vertical="false" value-name="State 1" value-postfix="sec" />
+            <Xdd.UI.Elements.ValueLabelElement value-vertical="false" value-name="State 2" value-postfix="sec" />
+            <Xdd.UI.Elements.ValueLabelElement value-vertical="false" value-name="State 3" value-postfix="sec" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="left-bottom" style="position: absolute; bottom: 0; left: 0; margin-left: 20px; margin-right: 20px; margin-top: 20px; margin-bottom: 20px; flex-direction: row;">
+        <Xdd.UI.Elements.ValueLabelElement value-name="Cash" value-vertical="true" value-postfix="$" name="cash-container" />
+        <Xdd.UI.Elements.ValueLabelElement value-name="Total Bet" value-vertical="true" value-postfix="$" name="bet-container" />
+    </ui:VisualElement>
+    <ui:VisualElement name="center-container" picking-mode="Ignore" style="position: absolute; top: 25%; left: 25%; right: 25%; align-items: center; justify-content: center; flex-direction: column; min-height: 350px; bottom: 25%;">
+        <ui:VisualElement name="bet" tabindex="10" style="align-items: center; justify-content: center; width: 100%; height: 100%;">
+            <ui:ScrollView name="bet-available" mode="Horizontal">
+                <Xdd.UI.Elements.ChipElement tabindex="-1" />
+                <Xdd.UI.Elements.ChipElement tabindex="-1" />
+                <Xdd.UI.Elements.ChipElement tabindex="-1" />
+                <Xdd.UI.Elements.ChipElement tabindex="-1" />
+                <Xdd.UI.Elements.ChipElement tabindex="-1" />
+            </ui:ScrollView>
+            <ui:VisualElement name="divide" style="height: 20px; width: 100%; background-color: rgb(64, 64, 64); border-left-color: rgb(128, 128, 128); border-right-color: rgb(128, 128, 128); border-top-color: rgb(128, 128, 128); border-bottom-color: rgb(128, 128, 128); border-left-width: 5px; border-right-width: 5px; border-top-width: 5px; border-bottom-width: 5px; margin-left: 15px; margin-right: 15px; margin-top: 15px; margin-bottom: 15px; border-top-left-radius: 15px; border-bottom-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px;" />
+            <ui:VisualElement name="bet-sum" style="flex-direction: row; justify-content: space-between; align-items: flex-start; width: 100%;">
+                <ui:ScrollView mode="Horizontal" name="bet-take" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden">
+                    <Xdd.UI.Elements.ChipElement tabindex="-1" />
+                </ui:ScrollView>
+                <ui:VisualElement style="flex-grow: 0; flex-shrink: 1;">
+                    <Xdd.UI.Elements.ValueLabelElement value-name="Bet" value-postfix="$" value-vertical="false" name="bet-amount" />
+                    <Xdd.UI.Elements.ValueLabelElement value-name="Count" value-prefix=" x" value-vertical="false" name="bet-count" value="10" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="center" picking-mode="Ignore" style="position: absolute; width: 100%; height: 100%; justify-content: center; align-items: center;">
+        <ui:Label name="center-message" binding-path="count" picking-mode="Ignore" style="font-size: 64px; -unity-text-outline-width: 0; -unity-text-outline-color: rgba(0, 0, 0, 0); text-shadow: 0 0 12px rgb(0, 0, 0);" />
+    </ui:VisualElement>
+</ui:UXML>

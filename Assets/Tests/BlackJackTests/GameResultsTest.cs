@@ -50,7 +50,7 @@ namespace Assets.Tests.BlackJackTest
             => TestGame(ranks, (game) =>
             {
                 Debug.Log("Player Stand");
-                game.Turn(game.players[0], BlackJackTurn.Stand);
+                game.Stand(game.players[0]);
             });
 
         [TestCase(new Ranks[] { Ranks.Ten, Ranks.Ten, Ranks.Ace, Ranks.Nine, Ranks.Ten },
@@ -60,9 +60,9 @@ namespace Assets.Tests.BlackJackTest
              => TestGame(ranks, (game) =>
              {
                  Debug.Log("Player Hit");
-                 game.Turn(game.players[0], BlackJackTurn.Hit);
+                 game.Hit(game.players[0]);
                  Debug.Log("Player Hit");
-                 game.Turn(game.players[0], BlackJackTurn.Hit);
+                 game.Hit(game.players[0]);
              });
 
         #endregion
@@ -105,7 +105,7 @@ namespace Assets.Tests.BlackJackTest
             return gameResult;
         }
 
-        private static string GetScores(IUser player)
+        private static string GetScores(IPlayer player)
             => GameScoreTests.ScoresToString(player.GetScores());
     }
 }

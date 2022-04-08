@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Assets.Source.Model.Games.BlackJack.Users
 {
-    internal abstract class User : IUser
+    internal abstract class User : IPlayer
     {
         public event Action<Card> OnCardAdd;
         public event Action<GameResult> OnResult;

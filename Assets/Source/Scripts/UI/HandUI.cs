@@ -2,7 +2,10 @@
 using System.Linq;
 using Assets.Source.Model.Games;
 using Assets.Source.Model.Games.BlackJack;
+using Assets.Source.Scripts.BlackJack;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
+using Xdd.UI.Elements;
 
 namespace Assets.Source.Scripts.UI
 {
@@ -23,7 +26,7 @@ namespace Assets.Source.Scripts.UI
         {
             set
             {
-                if (hand?.isDealer == true)
+                if (handScript?.isDealer == true)
                     return;
                 actions.style.visibility = value ? Visibility.Visible : Visibility.Hidden;
             }
@@ -32,6 +35,23 @@ namespace Assets.Source.Scripts.UI
         {
             set => score.style.visibility = value ? Visibility.Visible : Visibility.Hidden;
         }
+        public bool Bet
+        {
+            set
+            {
+                if (handScript?.isDealer == true)
+                    return;
+
+                bet.style.visibility = value ? Visibility.Visible : Visibility.Hidden;
+            }
+        }
+
+        public decimal BetAmount
+        {
+            set => bet.Value = $"{value}";
+        }
+
+        public bool All { set => Result = Actions = Score = Bet = value; }
 
         private VisualElement result;
         private Label resultLabel;
@@ -39,57 +59,63 @@ namespace Assets.Source.Scripts.UI
         private VisualElement actions;
         private VisualElement score;
         private Label scoreLabel;
+        private ValueLabelElement bet;
         private VisualElement handUI;
 
-        private BJHandScript hand;
+        private BJHandScript handScript;
 
-        public HandUI(BJHandScript hand, VisualElement handUI)
+        public HandUI(BJHandScript script, VisualElement handUI)
         {
-            this.hand = hand;
+            this.handScript = script;
             this.handUI = handUI;
 
-            this.result = handUI.Q("result-container");
-            this.resultLabel = result.Q<Label>("result-text");
-            this.actions = handUI.Q("actions-container");
-            this.score = handUI.Q("score-container");
-            this.scoreLabel = score.Q<Label>("score-text");
-            results = result.Q("result-images").hierarchy.Children().ToArray();
+            this.result = handUI.Q("result");
+            this.resultLabel = result.Q<Label>("text");
+            this.actions = handUI.Q("actions");
+            this.score = handUI.Q("score");
+            this.scoreLabel = score.Q<Label>("text");
+            this.bet = handUI.Q<ValueLabelElement>("bet");
+            results = result.Q("images").hierarchy.Children().ToArray();
 
-            if (hand.isDealer)
+            if (handScript.isDealer)
             {
-                handUI.Q("game-container").Remove(handUI.Q("actions-container"));
+                actions.parent.Remove(actions);
+                bet.parent.Remove(bet);
             }
             else
             {
-                actions.Q<Button>("hit").clicked += hand.Hit;
-                actions.Q<Button>("stand").clicked += hand.Stand;
+                actions.Q<Button>("hit").clicked += handScript.Hit;
+                actions.Q<Button>("stand").clicked += handScript.Stand;
+                actions.Q<Button>("double-up").clicked += handScript.DoubleUp;
             }
 
-            hand.OnUserChange += (user) =>
+            handScript.OnHandChange += (hand) =>
             {
-                Score = false;
-                if (user != null)
+                if (hand != null)
                 {
-                    user.OnCardAdd -= User_OnCardAdd;
+                    hand.User.OnCardAdd -= User_OnCardAdd;
                 }
 
-                if (hand.User != null)
+                if (handScript.Hand?.User != null)
                 {
-                    hand.User.OnCardAdd += User_OnCardAdd;
-                    Actions = hand.User.CanTurn;
+                    handScript.Hand.User.OnCardAdd += User_OnCardAdd;
                 }
             };
 
-            hand.OnCardsChange += OnCardChange;
-            hand.OnTurn += (turn) =>
+            handScript.OnCardsChange += OnCardsChange;
+            handScript.OnTurn += (turn) =>
             {
-                if (turn == BlackJackTurn.Stand)
-                    Actions = hand.User.CanTurn;
+                if (turn == BJTurn.Stand || turn == BJTurn.DoubleUp)
+                    Actions = handScript.Hand.User.CanTurn;
             };
+            handScript.OnBet += () =>
+            {
+                Bet = true;
+                BetAmount = handScript.Amount;
+            };
+            handScript.OnDoubleUp += () => BetAmount = handScript.Amount * 2;
 
-            Result = false;
-            Actions = false;
-            Score = false;
+            All = false;
         }
 
         private void User_OnCardAdd(Card obj)
@@ -97,14 +123,15 @@ namespace Assets.Source.Scripts.UI
             Actions = false;
         }
 
-        private void OnCardChange()
+        private void OnCardsChange()
         {
-            if (hand.User == null)
+            Score = handScript.cards.Count > 0;
+
+            if (handScript.Hand?.User == null)
                 return;
 
-            Actions = hand.User.CanTurn;
-            Score = true;
-            var scores = GameScores.GetBlackJackScores(hand.cards);
+            Actions = handScript.Hand.User.CanTurn;
+            var scores = GameScores.GetBlackJackScores(handScript.cards);
 
             if (scores.Count() > 0)
             {
@@ -127,10 +154,10 @@ namespace Assets.Source.Scripts.UI
 
         private bool SetResult()
         {
-            if (hand.User == null)
+            if (handScript.Hand?.User == null)
                 return false;
 
-            var status = hand.User.GetStatus().ToString();
+            var status = handScript.Hand.User.GetStatus().ToString();
 
             if (string.IsNullOrEmpty(status))
                 return false;

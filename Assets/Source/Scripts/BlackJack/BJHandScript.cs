@@ -1,89 +1,87 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Source.Model.Cycles.BlackJack;
 using Assets.Source.Model.Games;
-using Assets.Source.Model.Games.BlackJack;
-using Assets.Source.Model.Games.BlackJack.Users;
+using Assets.Source.Scripts.Hands;
+using Assets.Source.Scripts.UI;
 using UnityEngine;
 
-[ExecuteAlways]
-public class BJHandScript : MonoBehaviour, ICardStorage
+namespace Assets.Source.Scripts.BlackJack
 {
-    [field: SerializeField] public bool isDealer { get; private set; }
-
-    public event Action OnCardsChange;
-    public event Action<BlackJackTurn> OnTurn;
-    public event Action<IUser> OnUserChange;
-
-    public IUser User
+    [RequireComponent(typeof(HandStorageScript))]
+    public class BJHandScript : MonoBehaviour
     {
-        get => _User;
-        private set
+        public event Action OnBet;
+        public event Action OnDoubleUp;
+
+        [field: SerializeField] public bool isDealer { get; private set; }
+
+        public event Action OnCardsChange;
+        public event Action<BJTurn> OnTurn;
+        public event Action<Hand> OnHandChange;
+
+        public decimal Amount { get; private set; }
+
+        public Hand Hand
         {
-            var prev = _User;
-            _User = value;
-            OnUserChange?.Invoke(prev);
+            get => _Hand;
+            set
+            {
+                var hand = _Hand;
+                _Hand = value;
+                OnHandChange?.Invoke(hand);
+            }
+        }
+        public Hand _Hand;
+
+        [SerializeField] private HandUIScript handUIScript;
+        private HandStorageScript storage;
+
+        public List<ICard> cards => storage.cards.Select(x => x.card).Cast<ICard>().ToList();
+
+        void Awake()
+        {
+            storage = this.GetComponent<HandStorageScript>();
+            storage.OnCardsChange += () => OnCardsChange?.Invoke();
+            handUIScript.RegisterHand(this);
+        }
+
+        public void Bet(decimal amount)
+        {
+            this.Amount = amount;
+            OnBet?.Invoke();
+        }
+
+        public void Hit()
+        {
+            Hand.Hit();
+            OnTurn?.Invoke(BJTurn.Hit);
+        }
+
+        public void Stand()
+        {
+            Hand.Stand();
+            OnTurn?.Invoke(BJTurn.Stand);
+        }
+
+        public void DoubleUp()
+        {
+            Hand.DoubleUp();
+            OnTurn?.Invoke(BJTurn.DoubleUp);
+            OnDoubleUp?.Invoke();
+        }
+
+        public void InvokeOnCardsChange()
+        {
+            OnCardsChange?.Invoke();
         }
     }
-    private IUser _User;
-    private IBlackJack game;
 
-    public CardMono cardInstanse;
-    public GameUIScript uiScript;
-
-    public IEnumerable<ICard> cards => cardsMono.Select(x => x.card);
-    [SerializeField, HideInInspector] private List<CardMono> cardsMono = new List<CardMono>();
-
-    private Vector3 cardOffset = new Vector3(1.3f, 0.01f, 1.75f);
-
-    void Awake()
+    public enum BJTurn
     {
-        uiScript.RegisterHand(this);
-    }
-
-    public void AddCard(CardMono cardMono)
-    {
-        cardsMono.Add(cardMono);
-
-        cardMono.OnCardChange += () => OnCardsChange?.Invoke();
-
-        cardMono.transform.parent = this.transform;
-        OnCardsChange?.Invoke();
-    }
-
-    public Vector3 GetCardPosition()
-    {
-        return this.transform.position + (cardOffset * cardsMono.Count);
-    }
-
-    public void ClearCards()
-    {
-        cardsMono.Clear();
-        OnCardsChange?.Invoke();
-    }
-
-    public void BindPlayer(IUser user, IBlackJack game)
-    {
-        this.User = user;
-        this.game = game;
-    }
-    public void UnBindPlayer()
-    {
-        this.User = null;
-        this.game = null;
-    }
-
-    public void Hit()
-    {
-        var turn = BlackJackTurn.Hit;
-        game.Turn(User, turn);
-        OnTurn?.Invoke(turn);
-    }
-
-    public void Stand()
-    {
-        var turn = BlackJackTurn.Stand;
-        game.Turn(User, turn);
-        OnTurn?.Invoke(turn);
+        Hit,
+        Stand,
+        DoubleUp
     }
 }

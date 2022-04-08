@@ -10,8 +10,8 @@ namespace Assets.Source.Model.Games.BlackJack
         public event Action OnGameEnd;
         public event Action<Card> OnDillerUpHiddenCard;
 
-        public IUser[] players => _players;
-        public IUser dealer => _dealer;
+        public IPlayer[] players => _players;
+        public IPlayer dealer => _dealer;
 
         private Player[] _players;
         private Dealer _dealer;
@@ -66,41 +66,18 @@ namespace Assets.Source.Model.Games.BlackJack
             }
         }
 
-        public void Turn(IUser user, BlackJackTurn turn)
+        public void Hit(IPlayer player)
         {
-            if (!isGame) throw new Exception("Game is End");
+            GetPlayer(player).AddCard(GetCard());
 
-            var player = players.FirstOrDefault(x => x == user) as Player ?? throw new ArgumentException("Player not found");
-
-            if (!player.CanTurn)
-                throw new Exception("Can't turn");
-
-            switch (turn)
-            {
-                case BlackJackTurn.Hit:
-                    Hit(player);
-                    break;
-                case BlackJackTurn.Stand:
-                    Stand(player);
-                    break;
-                case BlackJackTurn.Split:
-                    break;
-            }
-
-            if (!_players.Any(x => x.CanTurn))
-            {
-                EndGame();
-            }
+            CheckGameIstEnd();
         }
 
-        private void Hit(Player player)
+        public void Stand(IPlayer player)
         {
-            player.AddCard(GetCard());
-        }
+            GetPlayer(player).CanTurn = false;
 
-        private void Stand(Player player)
-        {
-            player.CanTurn = false;
+            CheckGameIstEnd();
         }
 
         private void EndGame()
@@ -184,6 +161,26 @@ namespace Assets.Source.Model.Games.BlackJack
             }
             return card;
         }
+
+        private Player GetPlayer(IPlayer player)
+        {
+            if (!isGame) throw new Exception("Game is End");
+
+            var ret = players.FirstOrDefault(x => x == player) as Player ?? throw new ArgumentException("Player not found");
+
+            if (!player.CanTurn)
+                throw new Exception("Can't turn");
+
+            return ret;
+        }
+
+        private void CheckGameIstEnd()
+        {
+            if (!_players.Any(x => x.CanTurn))
+            {
+                EndGame();
+            }
+        }
     }
 
     public enum GameResult
@@ -191,12 +188,5 @@ namespace Assets.Source.Model.Games.BlackJack
         Win = 1,
         Lose,
         Push,
-    }
-
-    public enum BlackJackTurn
-    {
-        Hit,
-        Stand,
-        Split
     }
 }

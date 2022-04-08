@@ -18,7 +18,7 @@ namespace Assets.Editor.CustomEditors
         {
             base.OnInspectorGUI();
 
-            if(script.material != null)
+            if (script.material != null)
             {
                 GUILayout.Label(script.material.mainTexture, GUILayout.Width(300), GUILayout.Height(300));
             }

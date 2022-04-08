@@ -112,8 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953097137287de8489a8c3a1a884ea65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flipTime: 1
   _card: {fileID: 0}
-  flipTime: 5
 --- !u!1 &4408483104465463562
 GameObject:
   m_ObjectHideFlags: 0
