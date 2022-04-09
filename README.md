@@ -1,4 +1,5 @@
 # XddCards
+[Играть в браузере](https://0limpik.github.io/XddCards/)
 ## Управление
 ЛКМ - взять, ПКМ - отдать руку
 
