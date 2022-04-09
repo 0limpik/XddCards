@@ -41,38 +41,32 @@ namespace Xdd.Scripts.Hands
 
                     foreach (var hand in AllHands)
                     {
-                        if (LastRaycastScript.underMouseLeftClick == hand.gameObject)
+                        if (LastRaycastScript.underMouseLeftClick == hand.gameObject && !hand.IsBusy)
                         {
-                            if (!hand.IsBusy)
+                            hand.Take();
+                            try
                             {
-                                hand.Take();
-                                try
-                                {
-                                    user.Take();
-                                }
-                                catch (Exception ex)
-                                {
-                                    Debug.LogException(ex);
-                                    hand.Relese();
-                                }
+                                user.Take();
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.LogException(ex);
+                                hand.Relese();
                             }
                             await TaskEx.Delay(0.1f);
                             break;
                         }
-                        if (LastRaycastScript.underMouseRightClick == hand.gameObject)
+                        if (LastRaycastScript.underMouseRightClick == hand.gameObject && hand.IsBusy)
                         {
-                            if (hand.IsBusy)
+                            hand.Relese();
+                            try
                             {
-                                hand.Relese();
-                                try
-                                {
-                                    user.Release();
-                                }
-                                catch (Exception ex)
-                                {
-                                    Debug.LogException(ex);
-                                    hand.Take();
-                                }
+                                user.Release();
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.LogException(ex);
+                                hand.Take();
                             }
                             await TaskEx.Delay(0.1f);
                             break;

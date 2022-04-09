@@ -1,8 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Game/value-label-styles.uss?fileID=7433441132597879392&amp;guid=c5003e2a88e14d14e87b45fb77ee42f5&amp;type=3#value-label-styles" />
     <Style src="project://database/Assets/UI/BlackJack/player-hand-styles.uss?fileID=7433441132597879392&amp;guid=ac8c18c7f8e0639449328d9e967ae43d&amp;type=3#player-hand-styles" />
-    <ui:VisualElement name="container" picking-mode="Ignore" style="position: absolute; align-items: flex-start; flex-direction: row-reverse;">
-        <ui:VisualElement style="align-items: center;">
+    <ui:VisualElement name="container" picking-mode="Ignore" style="position: absolute; align-items: flex-start; flex-direction: row-reverse; margin-left: 25px;">
+        <ui:VisualElement picking-mode="Ignore" style="align-items: center;">
             <ui:VisualElement name="result" picking-mode="Ignore">
                 <ui:VisualElement name="container" style="border-top-left-radius: 50px; border-bottom-left-radius: 50px; border-top-right-radius: 50px; border-bottom-right-radius: 50px; align-items: center; margin-bottom: 15px;">
                     <ui:VisualElement name="images" class="images">
@@ -31,7 +31,7 @@
             <ui:VisualElement name="score" picking-mode="Ignore" style="flex-direction: row; justify-content: center; margin-top: 10px;">
                 <ui:Label text="999" display-tooltip-when-elided="true" name="text" binding-path="displayScore" style="-unity-text-align: upper-center; -unity-font-style: bold; font-size: 30px; border-left-color: rgb(255, 151, 0); border-right-color: rgb(255, 151, 0); border-top-color: rgb(255, 151, 0); border-bottom-color: rgb(255, 151, 0); border-left-width: 3px; border-right-width: 3px; border-top-width: 3px; border-bottom-width: 3px; border-top-left-radius: 15px; border-bottom-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; position: relative; padding-right: 6px; padding-left: 8px; color: rgb(255, 151, 0); background-color: rgba(0, 0, 0, 0.63); margin-left: 4px; margin-right: 4px;" />
             </ui:VisualElement>
+            <Xdd.UI.Elements.ValueLabelElement value-name="Bet" name="bet" value-postfix="$" picking-mode="Ignore" style="margin-top: 10px;" />
         </ui:VisualElement>
-        <Xdd.UI.Elements.ValueLabelElement value-name="Bet" name="bet" value-postfix="$" style="margin-top: 0; margin-left: -80px; margin-right: -60px;" />
     </ui:VisualElement>
 </ui:UXML>

@@ -18,15 +18,30 @@ namespace Xdd.Scripts.UI
         private Camera Camera => _Camera ??= Camera.main;
         private Camera _Camera;
 
+        private List<HandUI> handUIs = new List<HandUI>();
+
+        private Vector2 resolution;
+
         void Awake()
         {
             document = this.GetComponent<UIDocument>();
             gameScript.OnGameResult += (delay) => ShowResults(delay);
         }
 
-        private List<HandUI> handUIs = new List<HandUI>();
+        void FixedUpdate()
+        {
+            if (Screen.width != resolution.x || Screen.height != resolution.y)
+            {
+                resolution = new Vector2(Screen.width, Screen.height);
 
-        public void RegisterHand(BJHandScript hand)
+                foreach (var handUI in handUIs)
+                {
+                    SetHandUIPosition(handUI);
+                }
+            }
+        }
+
+        public async void RegisterHand(BJHandScript hand)
         {
             var tree = handUIDocument.CloneTree();
 
@@ -42,18 +57,20 @@ namespace Xdd.Scripts.UI
 
             document.rootVisualElement.Add(tree);
 
-            var container = tree.Q("container");
+            await TaskEx.Delay(0.1f);
 
-            var screenPos = WorldToScreenSpace(hand.transform.position);
+            SetHandUIPosition(handUI);
+        }
 
-            tree.RegisterCallback<GeometryChangedEvent>((x) =>
-            {
-                var width = container.resolvedStyle.width;
-                var height = container.resolvedStyle.height;
+        private void SetHandUIPosition(HandUI handUI)
+        {
+            var screenPos = WorldToScreenSpace(handUI.handScript.transform.position);
 
-                tree.style.left = screenPos.x - width / 2;
-                tree.style.top = screenPos.y - height / 2;
-            });
+            var width = handUI.container.resolvedStyle.width;
+            var height = handUI.container.resolvedStyle.height;
+
+            handUI.tree.style.left = screenPos.x - width / 2;
+            handUI.tree.style.top = screenPos.y - height / 2;
         }
 
         private async void ShowResults(float delay)

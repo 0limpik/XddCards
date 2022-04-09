@@ -20,6 +20,7 @@ namespace Xdd.Scripts.Take
         public Material material;
         public Color lightColor;
         public float lightRange;
+        public float lightIntensive;
         public TakeState state;
     }
 

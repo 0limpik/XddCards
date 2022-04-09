@@ -52,7 +52,6 @@ namespace Xdd.Scripts.BlackJack
                 {
                     isGame = true;
 
-                    await Task.Yield();
                     cycle.Start();
 
                     OnHand?.Invoke(handTakeDelay);

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Xdd.Model.Cycles.BlackJack;
 using Xdd.Model.Cycles.BlackJack.Controllers;
+using Xdd.Scripts.Base;
 using Xdd.Scripts.UI.BlackJack;
 
 namespace Xdd.Scripts.UI
@@ -57,7 +58,7 @@ namespace Xdd.Scripts.UI
         {
             centerMessage.text = message ?? "null";
             centerMessage.style.color = color ?? Color.white;
-            await Task.Delay(3000);
+            await TaskEx.Delay(3f);
             centerMessage.text = null;
         }
     }

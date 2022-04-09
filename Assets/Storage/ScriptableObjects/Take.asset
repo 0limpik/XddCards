@@ -15,20 +15,24 @@ MonoBehaviour:
   available:
     material: {fileID: 2100000, guid: 4af0e3d52ff9c35489af466df2211383, type: 2}
     lightColor: {r: 0, g: 1, b: 1, a: 0}
-    lightRange: 10
+    lightRange: 7
+    lightIntensive: 7
     state: 0
   busy:
     material: {fileID: 2100000, guid: f2b80bcd44e10984489eccb104e76d0d, type: 2}
     lightColor: {r: 1, g: 0.5647059, b: 0, a: 0}
-    lightRange: 15
+    lightRange: 10
+    lightIntensive: 7
     state: 1
   press:
     material: {fileID: 2100000, guid: a180ca7981c3ddc41b38266e93c9c17b, type: 2}
     lightColor: {r: 0, g: 1, b: 0, a: 0}
-    lightRange: 10
+    lightRange: 15
+    lightIntensive: 3
     state: 2
   release:
     material: {fileID: 2100000, guid: 8a55dba8a0830294fa52e4a6aeb58221, type: 2}
     lightColor: {r: 1, g: 0, b: 0, a: 0}
-    lightRange: 50
+    lightRange: 15
+    lightIntensive: 7
     state: 3

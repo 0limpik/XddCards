@@ -59,15 +59,17 @@ namespace Xdd.Scripts.UI
         private VisualElement score;
         private Label scoreLabel;
         private ValueLabelElement bet;
-        private VisualElement handUI;
+        public VisualElement tree;
+        public VisualElement container;
 
-        private BJHandScript handScript;
+        public BJHandScript handScript;
 
         public HandUI(BJHandScript script, VisualElement handUI)
         {
             this.handScript = script;
-            this.handUI = handUI;
+            this.tree = handUI;
 
+            this.container = handUI.Q("container");
             this.result = handUI.Q("result");
             this.resultLabel = result.Q<Label>("text");
             this.actions = handUI.Q("actions");

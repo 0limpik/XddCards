@@ -37,6 +37,8 @@ namespace Xdd.Scripts.Take
         private MeshRenderer _meshRenderer;
         private Collider _collider;
 
+        private TakeStateParam param;
+
         private float intensity;
 
         void Awake()
@@ -46,17 +48,16 @@ namespace Xdd.Scripts.Take
             _meshRenderer = this.GetComponent<MeshRenderer>();
             _collider = this.GetComponent<Collider>();
             SetState(_State);
-
-            intensity = _light.intensity;
         }
 
         private void SetState(TakeState state)
         {
-            var stateParam = takeObject.AllStates.First(x => x.state == state);
+            param = takeObject.AllStates.First(x => x.state == state);
 
-            _renderer.material = stateParam.material;
-            _light.color = stateParam.lightColor;
-            _light.range = stateParam.lightRange;
+            _renderer.material = param.material;
+            _light.color = param.lightColor;
+            _light.range = param.lightRange;
+            _light.intensity = param.lightIntensive;
         }
 
         private bool lastState;
@@ -64,7 +65,8 @@ namespace Xdd.Scripts.Take
 
         void Update()
         {
-            _light.intensity = intensity + Mathf.PingPong(Time.time * 3, 5);
+            _light.intensity = param.lightIntensive
+                + Mathf.PingPong(Time.time, 3) * 0.3f;
         }
 
         void LateUpdate()

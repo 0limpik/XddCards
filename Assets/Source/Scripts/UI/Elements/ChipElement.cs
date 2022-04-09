@@ -31,7 +31,7 @@ namespace Xdd.UI.Elements
                 base.Init(visualElement, bag, context);
                 var chipElement = visualElement as ChipElement;
 
-                chipElement.ImagePath = m_SpritePath.GetValueFromBag(bag, context);
+                //chipElement.ImagePath = m_SpritePath.GetValueFromBag(bag, context);
                 chipElement.Value = m_Value.GetValueFromBag(bag, context);
                 chipElement.Postfix = m_Postfix.GetValueFromBag(bag, context);
             }
@@ -76,7 +76,7 @@ namespace Xdd.UI.Elements
 
         private void InitDefault()
         {
-            ImagePath = d_SpritePath;
+            //ImagePath = d_SpritePath;
             Value = d_Value;
             Postfix = d_Postfix;
         }
@@ -107,7 +107,7 @@ namespace Xdd.UI.Elements
             {
                 _ImagePath = value;
 
-                _Sprite = AssetDatabase.LoadAssetAtPath<Sprite>(value);
+                //_Sprite = Resources.Load<Sprite>(value);
                 image.style.backgroundImage = new StyleBackground(_Sprite);
             }
         }
