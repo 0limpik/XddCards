@@ -41,7 +41,7 @@ namespace Assets.Editor.EditorWindows
                     Ranks.Six, Ranks.Seven, Ranks.Eight, Ranks.Nine, Ranks.Ten, Ranks.Jack, Ranks.Queen, Ranks.King};
                 var suits = new Suits[] { Suits.Clubs, Suits.Hearts, Suits.Spades, Suits.Diamonds };
 
-                var cards = new Card[ranks.Count() * suits.Count()];
+                var cards = new ICard[ranks.Count() * suits.Count()];
 
                 var num = 0;
 
@@ -49,7 +49,8 @@ namespace Assets.Editor.EditorWindows
                 {
                     foreach (var rank in ranks)
                     {
-                        cards[num++] = new Card { rank = rank, suit = suit };
+                        var card = ScriptableObject.CreateInstance<CardObject>();
+                        cards[num++] = new CardObject { _rank = rank, _suit = suit };
                     }
                 }
 

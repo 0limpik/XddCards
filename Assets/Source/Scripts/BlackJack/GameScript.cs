@@ -55,7 +55,7 @@ namespace Xdd.Scripts.BlackJack
             this.cycle = cycle;
             this.user = user;
 
-            controller.dealerHand.player.OnCardAdd += (card) => OnCardAdd(dealerHand, card);
+            controller.dealerHand.OnCardAdd += (card) => OnCardAdd(dealerHand, card);
             controller.OnDillerUpHiddenCard += (card) => OnDillerUpHiddenCard(card);
             dealerHand.GetComponent<BJHandScript>().Hand = controller.dealerHand;
             controller.OnGameEnd += async () => await OnGameEnd();
@@ -85,7 +85,7 @@ namespace Xdd.Scripts.BlackJack
 
                 var storage = hand.GetComponent<HandStorageScript>();
                 var bjHand = hand.GetComponent<BJHandScript>();
-                player.player.OnCardAdd += (card) =>
+                player.OnCardAdd += (card) =>
                 {
                     OnCardAdd(storage, card);
                     bjHand.InvokeOnCardsChange();
@@ -102,13 +102,13 @@ namespace Xdd.Scripts.BlackJack
                 (x) => OnDealtEnd?.Invoke();
         }
 
-        private void OnCardAdd(HandStorageScript hand, Card card)
+        private void OnCardAdd(HandStorageScript hand, ICard card)
         {
             var cardMono = CreateCard(card);
             hand.AddCard(manager, cardMono);
         }
 
-        private CardMono CreateCard(Card card)
+        private CardMono CreateCard(ICard card)
         {
             var transform = this.transform;
             var position = transform.position;

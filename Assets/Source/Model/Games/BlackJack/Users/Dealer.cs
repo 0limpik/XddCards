@@ -6,12 +6,12 @@ namespace Xdd.Model.Games.BlackJack.Users
 {
     internal class Dealer : User
     {
-        public Dealer(Func<IEnumerable<Card>, IEnumerable<int>> GetScores)
+        public Dealer(Func<IEnumerable<ICard>, IEnumerable<int>> GetScores)
             : base(GetScores)
         {
         }
 
-        public override void AddCard(Card card)
+        public override void AddCard(ICard card)
         {
             base.AddCard(card);
 
@@ -20,7 +20,7 @@ namespace Xdd.Model.Games.BlackJack.Users
             InvokeOnCardAdd(card);
         }
 
-        public void AddCardHidden(Card card)
+        public void AddCardHidden(ICard card)
         {
             base.AddCard(card);
 

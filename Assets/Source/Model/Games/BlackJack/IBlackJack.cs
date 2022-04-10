@@ -6,7 +6,7 @@ namespace Xdd.Model.Games.BlackJack
     public interface IBlackJack
     {
         event Action OnGameEnd;
-        event Action<Card> OnDillerUpHiddenCard;
+        event Action<ICard> OnDillerUpHiddenCard;
 
         bool isGame { get; }
 

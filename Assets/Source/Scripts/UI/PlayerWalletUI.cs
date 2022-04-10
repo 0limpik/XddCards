@@ -22,7 +22,7 @@ namespace Xdd.Scripts.UI
         private int BetsDoubleCount;
         private decimal TotalBetSum => BetSum * (controller.HandCount + BetsDoubleCount);
 
-        [SerializeField] private BetsUI betsUI;
+        [SerializeField] private BetsUIScript betsUI;
         [SerializeField] private GameScript gameScript;
 
         private decimal Cash

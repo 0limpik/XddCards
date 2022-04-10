@@ -10,14 +10,14 @@ namespace Xdd.Model.Games.BlackJack
     public class Game : IBlackJack
     {
         public event Action OnGameEnd;
-        public event Action<Card> OnDillerUpHiddenCard;
+        public event Action<ICard> OnDillerUpHiddenCard;
 
         public IPlayer[] players => _players;
         public IPlayer dealer => _dealer;
 
         private Player[] _players;
         private Dealer _dealer;
-        private Card dillerHiddenCard;
+        private ICard dillerHiddenCard;
 
         internal Deck deck = new Deck();
 
@@ -155,9 +155,9 @@ namespace Xdd.Model.Games.BlackJack
             OnDillerUpHiddenCard?.Invoke(dillerHiddenCard);
         }
 
-        private Card GetCard()
+        private ICard GetCard()
         {
-            if (!deck.TryPeek(out Card card))
+            if (!deck.TryPeek(out ICard card))
             {
                 deck.Reload();
             }

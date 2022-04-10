@@ -6,10 +6,10 @@ using Random = UnityEngine.Random;
 
 namespace Xdd.Model.Games
 {
-    public class Deck
+    internal class Deck
     {
-        public List<Card> cards;
-        private List<Card> removedCards = new List<Card>();
+        public List<ICard> cards;
+        private List<ICard> removedCards = new List<ICard>();
 
         public Deck()
         {
@@ -17,7 +17,7 @@ namespace Xdd.Model.Games
             Shuffle();
         }
 
-        public bool TryPeek(out Card card)
+        public bool TryPeek(out ICard card)
         {
             if (cards.Count > 0)
             {
@@ -54,7 +54,7 @@ namespace Xdd.Model.Games
             }
         }
 
-        public static Card[] Create()
+        public static ICard[] Create()
         {
             var ranks = Enum.GetValues(typeof(Ranks)).Cast<Ranks>();
             var suits = Enum.GetValues(typeof(Suits)).Cast<Suits>();

@@ -16,3 +16,13 @@
     color: rgb(255, 196, 0);
     font-size: 20px;
 }
+
+.divide {
+    height: 20px;
+    width: 100%;
+    background-color: rgb(64, 64, 64);
+    border-color: rgb(128, 128, 128);
+    border-width: 5px;
+    margin: 15px;
+    border-radius: 15px;
+}

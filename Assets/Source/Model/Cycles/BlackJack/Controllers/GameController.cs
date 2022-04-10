@@ -40,6 +40,7 @@ namespace Xdd.Model.Cycles.BlackJack.Controllers
 
         public void Start()
         {
+            CheckExecute();
             game.Start();
         }
 

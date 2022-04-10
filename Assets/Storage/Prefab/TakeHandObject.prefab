@@ -126,7 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ef10a853c4878b479378eae310ece87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardsMono: []
   moveTime: 1
 --- !u!64 &6439105093958297272
 MeshCollider:
@@ -225,7 +224,7 @@ Light:
     serializedVersion: 2
     m_Bits: 2147483647
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 0

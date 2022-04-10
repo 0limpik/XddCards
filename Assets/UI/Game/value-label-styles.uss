@@ -8,7 +8,6 @@ ValueLabelElement {
     border-color: rgb(128, 128, 128);
     flex-direction: row;
     flex-wrap: nowrap;
-
     transition-duration: 500ms;
 }
 

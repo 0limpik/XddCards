@@ -1,8 +1,10 @@
-﻿using Xdd.Model.Enums;
+﻿using System.Runtime.CompilerServices;
+using Xdd.Model.Enums;
 
+[assembly: InternalsVisibleTo("Tests")]
 namespace Xdd.Model.Games
 {
-    public class Card : ICard
+    internal class Card : ICard
     {
         public Suits suit { get; set; }
         public Ranks rank { get; set; }

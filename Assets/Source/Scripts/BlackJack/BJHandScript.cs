@@ -5,7 +5,7 @@ using UnityEngine;
 using Xdd.Model.Cycles.BlackJack;
 using Xdd.Model.Games;
 using Xdd.Scripts.Hands;
-using Xdd.Scripts.UI;
+using Xdd.Scripts.UI.BlackJack.Hand;
 
 namespace Xdd.Scripts.BlackJack
 {
@@ -15,8 +15,7 @@ namespace Xdd.Scripts.BlackJack
         public event Action OnBet;
         public event Action OnDoubleUp;
         public event Action OnCardsChange;
-        public event Action<BJTurn> OnTurn;
-        public event Action<Hand> OnHandChange;
+        public event Action OnHandChange;
 
         [field: SerializeField]
         public bool isDealer { get; private set; }
@@ -28,9 +27,8 @@ namespace Xdd.Scripts.BlackJack
             get => _Hand;
             set
             {
-                var hand = _Hand;
                 _Hand = value;
-                OnHandChange?.Invoke(hand);
+                OnHandChange?.Invoke();
             }
         }
         public Hand _Hand;
@@ -55,21 +53,14 @@ namespace Xdd.Scripts.BlackJack
         }
 
         public void Hit()
-        {
-            Hand.Hit();
-            OnTurn?.Invoke(BJTurn.Hit);
-        }
+            => Hand.Hit();
 
         public void Stand()
-        {
-            Hand.Stand();
-            OnTurn?.Invoke(BJTurn.Stand);
-        }
+            => Hand.Stand();
 
         public void DoubleUp()
         {
             Hand.DoubleUp();
-            OnTurn?.Invoke(BJTurn.DoubleUp);
             OnDoubleUp?.Invoke();
         }
 

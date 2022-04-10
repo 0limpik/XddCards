@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 using Xdd.Scripts.Base;
 using Xdd.Scripts.BlackJack;
 
-namespace Xdd.Scripts.UI
+namespace Xdd.Scripts.UI.BlackJack.Hand
 {
     [RequireComponent(typeof(UIDocument))]
     internal class HandUIScript : MonoBehaviour
@@ -25,7 +25,7 @@ namespace Xdd.Scripts.UI
         void Awake()
         {
             document = this.GetComponent<UIDocument>();
-            gameScript.OnGameResult += (delay) => ShowResults(delay);
+            gameScript.OnGameResult += ShowResults;
         }
 
         void FixedUpdate()
@@ -75,9 +75,9 @@ namespace Xdd.Scripts.UI
 
         private async void ShowResults(float delay)
         {
-            handUIs.ForEach(x => x.Result = true);
+            handUIs.ForEach(x => x.SetResult(true));
             await TaskEx.Delay(delay);
-            handUIs.ForEach(x => x.Result = x.Bet = false);
+            handUIs.ForEach(x => x.SetResult(false));
         }
 
         private Vector2 WorldToScreenSpace(Vector3 position)

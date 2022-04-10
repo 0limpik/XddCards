@@ -10,14 +10,14 @@ namespace Xdd.Model.Games.BlackJack.Users
 
         public bool isNotifiedResult;
 
-        public Player(Func<IEnumerable<Card>, IEnumerable<int>> GetScores, Dealer dealer)
+        public Player(Func<IEnumerable<ICard>, IEnumerable<int>> GetScores, Dealer dealer)
             : base(GetScores)
         {
             OnResult += (result) => isNotifiedResult = true;
             this.dealer = dealer;
         }
 
-        public override void AddCard(Card card)
+        public override void AddCard(ICard card)
         {
             base.AddCard(card);
 

@@ -6,20 +6,20 @@ namespace Xdd.Model.Games.BlackJack.Users
 {
     internal abstract class User : IPlayer
     {
-        public event Action<Card> OnCardAdd;
+        public event Action<ICard> OnCardAdd;
         public event Action<GameResult> OnResult;
 
-        protected List<Card> cards = new List<Card>();
-        private Func<IEnumerable<Card>, IEnumerable<int>> GetScoresIternal;
+        protected List<ICard> cards = new List<ICard>();
+        private Func<IEnumerable<ICard>, IEnumerable<int>> GetScoresIternal;
 
         public bool CanTurn { get; set; } = true;
 
-        public User(Func<IEnumerable<Card>, IEnumerable<int>> GetScores)
+        public User(Func<IEnumerable<ICard>, IEnumerable<int>> GetScores)
         {
             this.GetScoresIternal = GetScores;
         }
 
-        public virtual void AddCard(Card card)
+        public virtual void AddCard(ICard card)
         {
             cards.Add(card);
 
@@ -53,7 +53,7 @@ namespace Xdd.Model.Games.BlackJack.Users
         public void InvokeOnResult(GameResult result)
             => OnResult?.Invoke(result);
 
-        protected void InvokeOnCardAdd(Card card)
+        protected void InvokeOnCardAdd(ICard card)
             => OnCardAdd?.Invoke(card);
 
         public abstract PlayerStatus? GetStatus();

@@ -13,7 +13,7 @@ using Xdd.UI.Elements;
 namespace Xdd.Scripts.UI
 {
     [RequireComponent(typeof(UIDocument))]
-    internal class BetsUI : MonoBehaviour, ICycleRequired
+    internal class BetsUIScript : MonoBehaviour, ICycleRequired
     {
         public event Action<decimal> OnBetChange;
 

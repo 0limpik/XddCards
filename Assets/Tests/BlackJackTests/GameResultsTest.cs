@@ -94,7 +94,7 @@ namespace Assets.Tests.BlackJackTest
                 Debug.Log($"Game End");
                 Debug.Log($"{GetScores(game.players[0])} {gameResult} {GetScores(game.dealer)}");
             };
-            game.deck.cards = ranks.Select(x => new Card { rank = x, suit = Suits.Clubs }).ToList();
+            game.deck.cards = ranks.Select(x => new Card { rank = x, suit = Suits.Clubs }).Cast<ICard>().ToList();
             Debug.Log("Game Start");
             game.Start();
             afterStart?.Invoke(game);
