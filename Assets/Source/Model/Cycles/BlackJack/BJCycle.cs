@@ -7,9 +7,21 @@ using Xdd.Model.Cycles.BlackJack.Controllers;
 
 namespace Xdd.Model.Cycles.BlackJack
 {
-    public class BJCycle
+    public enum BJCycleStates
     {
-        public event Action<AState> OnStateChange;
+        Hand,
+        Bet,
+        Game
+    }
+
+    public static class BJCycleFabric
+    {
+        public static IBJCycle Create() => new BJCycle();
+    }
+
+    internal class BJCycle : IBJCycle
+    {
+        public event Action<BJCycleStates> OnStateChange;
 
         private User[] users;
         private List<Hand> hands;
@@ -18,15 +30,17 @@ namespace Xdd.Model.Cycles.BlackJack
         public Hand[] Hands => hands.ToArray();
 
         public HandController handController { get; private set; }
-        public BetController betController { get; private set; }
+        public IBetController BetController => _BetController;
+        private BetController _BetController;
         public GameController gameController { get; private set; }
 
-        private IEnumerable<AState> States
+
+        private IEnumerable<IState> States
         {
             get
             {
                 yield return handController;
-                yield return betController;
+                yield return _BetController;
                 yield return gameController;
             }
         }
@@ -52,13 +66,13 @@ namespace Xdd.Model.Cycles.BlackJack
         public void Start()
         {
             handController.IsExecute = true;
-            OnStateChange?.Invoke(handController);
+            OnStateChange?.Invoke(handController.State);
         }
 
         public bool CanSwitchState(out string message)
         {
             message = null;
-            AState prevState = gameController;
+            IState prevState = gameController;
             foreach (var state in States)
             {
                 if (prevState.IsExecute)
@@ -77,14 +91,14 @@ namespace Xdd.Model.Cycles.BlackJack
 
         public void SwitchState()
         {
-            AState prevState = gameController;
+            IState prevState = gameController;
             foreach (var state in States)
             {
                 if (prevState.IsExecute)
                 {
                     prevState.IsExecute = false;
                     state.IsExecute = true;
-                    OnStateChange?.Invoke(state);
+                    OnStateChange?.Invoke(state.State);
                     return;
                 }
                 prevState = state;
@@ -95,13 +109,13 @@ namespace Xdd.Model.Cycles.BlackJack
         public void Reset()
         {
             handController = new HandController(users, hands);
-            betController = new BetController(users);
+            _BetController = new BetController(users);
             gameController = new GameController(users);
 
             foreach (var user in users)
             {
                 user.handController = handController;
-                user.betController = betController;
+                user.betController = _BetController;
                 user.gameController = gameController;
 
                 foreach (var hand in user.hands)
@@ -121,5 +135,22 @@ namespace Xdd.Model.Cycles.BlackJack
                     Debug.LogAssertion($"Incorect {state} when active {States.FirstOrDefault(x => x.IsExecute)?.ToString() ?? "null"}");
             }
         }
+    }
+
+    public interface IBJCycle
+    {
+        event Action<BJCycleStates> OnStateChange;
+
+        User[] Users { get; }
+
+        HandController handController { get; }
+        IBetController BetController { get; }
+        GameController gameController { get; }
+
+        bool CanSwitchState(out string message);
+        void Init(Wallet[] wallets, int handCount);
+        void Reset();
+        void Start();
+        void SwitchState();
     }
 }

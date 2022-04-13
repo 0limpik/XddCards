@@ -2,8 +2,22 @@
 
 namespace Xdd.Model.Cycles.BlackJack
 {
-    public abstract class AState
+    public interface IState
     {
+        public BJCycleStates State { get; }
+        bool IsExecute { get; set; }
+
+        event Action<bool> OnChangeExecute;
+        event Action<AState> OnIncorectState;
+
+        bool CanEnter(out string message);
+        bool CanExit(out string message);
+    }
+
+    public abstract class AState : IState
+    {
+        public abstract BJCycleStates State { get; }
+
         public event Action<AState> OnIncorectState;
 
         public event Action<bool> OnChangeExecute;

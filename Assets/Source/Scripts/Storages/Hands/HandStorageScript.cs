@@ -7,7 +7,7 @@ using Xdd.Scripts.Cards;
 
 namespace Xdd.Scripts.Hands
 {
-    internal class HandStorageScript : MonoBehaviour
+    public class HandStorageScript : MonoBehaviour
     {
         public event Action OnCardsChange;
         public List<CardMono> cards { get; private set; } = new List<CardMono>();

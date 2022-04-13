@@ -1,8 +1,12 @@
-﻿namespace Xdd.Model.Cash
+﻿using System;
+using UnityEngine;
+
+namespace Xdd.Model.Cash
 {
+    [Serializable]
     public class Bet
     {
-        public decimal Amount { get; set; }
+        [field: SerializeField] public decimal Amount { get; set; }
 
         public Bet(decimal bet)
         {

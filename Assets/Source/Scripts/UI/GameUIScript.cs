@@ -20,8 +20,8 @@ namespace Xdd.Scripts.UI
         private Label centerMessage;
         private VisualElement betsContainer;
 
-        private BetController controller => cycle.betController;
-        private BJCycle cycle;
+        private IBetController controller => cycle.BetController;
+        private IBJCycle cycle;
 
         void Awake()
         {
@@ -35,7 +35,7 @@ namespace Xdd.Scripts.UI
             betsContainer.style.display = DisplayStyle.None;
         }
 
-        public void InitCycle(BJCycle cycle, User user)
+        public void InitCycle(IBJCycle cycle, User user)
         {
             this.cycle = cycle;
 

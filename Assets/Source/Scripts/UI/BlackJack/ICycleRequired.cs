@@ -4,6 +4,6 @@ namespace Xdd.Scripts.UI.BlackJack
 {
     internal interface ICycleRequired
     {
-        void InitCycle(BJCycle cycle, User user);
+        void InitCycle(IBJCycle cycle, User user);
     }
 }

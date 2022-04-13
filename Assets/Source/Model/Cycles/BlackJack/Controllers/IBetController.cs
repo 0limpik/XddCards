@@ -3,14 +3,22 @@ using System.Linq;
 
 namespace Xdd.Model.Cycles.BlackJack.Controllers
 {
-    public class BetController : AState
+    public interface IBetController : IState
     {
+        int HandCount { get; }
+        decimal Amount { get; }
+    }
+
+    internal class BetController : AState, IBetController
+    {
+        public override BJCycleStates State => BJCycleStates.Bet;
+
         private const string c_userHasTBets = "At least one player must have a bet";
 
         private User[] users;
 
         public decimal Amount => users.First().Amount;
-        public decimal HandCount => users.First().hands.Count;
+        public int HandCount => users.First().hands.Count;
 
         internal BetController(User[] users)
         {

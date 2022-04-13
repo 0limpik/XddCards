@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Xdd.Model.Cash
 {
+    [Serializable]
     public class Wallet
     {
         public event Action OnChange;
 
-        public decimal Cash { get; private set; }
+        [field: SerializeField] public decimal Cash { get; private set; }
 
-        private List<Bet> bets = new List<Bet>();
+        [field: SerializeField] private List<Bet> bets = new List<Bet>();
 
         public decimal All => Cash + BetsAmount;
         public decimal BetsAmount => bets.Select(x => x.Amount).Sum();

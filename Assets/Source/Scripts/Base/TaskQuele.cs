@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
 namespace Xdd.Scripts.Base
 {
-    internal class TaskQueue
+    public class TaskQueue
     {
         public event Action<TaskItem> OnTaskAdd;
         public event Action OnQueueEnd;
@@ -16,9 +16,9 @@ namespace Xdd.Scripts.Base
         private Task currentTask = Task.CompletedTask;
 
         public ITaskItem AddTask(
-            Func<TaskItem, Task> action,
-            Func<TaskItem, Task> after = null,
-            Func<TaskItem, Task> before = null,
+            Func<ITaskItem, Task> action,
+            Func<ITaskItem, Task> after = null,
+            Func<ITaskItem, Task> before = null,
             string name = null)
         {
             var task = new TaskItem(action, after, before, name);
@@ -54,12 +54,12 @@ namespace Xdd.Scripts.Base
         }
     }
 
-    internal class TaskItem : ITaskItem
+    public class TaskItem : ITaskItem
     {
         public string Name { get; private set; }
 
-        public event Action<TaskItem> OnStart;
-        public event Action<TaskItem> OnEnd;
+        public event Action<ITaskItem> OnStart;
+        public event Action<ITaskItem> OnEnd;
 
         public TaskItemStatus Status { get; private set; } = TaskItemStatus.Wait;
 
@@ -95,15 +95,15 @@ namespace Xdd.Scripts.Base
         }
     }
 
-    internal interface ITaskItem
+    public interface ITaskItem
     {
         TaskItemStatus Status { get; }
 
-        event Action<TaskItem> OnStart;
-        event Action<TaskItem> OnEnd;
+        event Action<ITaskItem> OnStart;
+        event Action<ITaskItem> OnEnd;
     }
 
-    internal enum TaskItemStatus
+    public enum TaskItemStatus
     {
         Wait,
         Run,

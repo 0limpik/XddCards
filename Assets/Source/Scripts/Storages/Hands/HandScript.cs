@@ -6,7 +6,7 @@ using Xdd.Scripts.Take;
 namespace Xdd.Scripts.Hands
 {
     [RequireComponent(typeof(TakeObjectScript))]
-    internal class HandScript : MonoBehaviour
+    public class HandScript : MonoBehaviour
     {
         public event Action OnInteraction;
 

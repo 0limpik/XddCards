@@ -36,9 +36,9 @@ namespace Xdd.Scripts.UI
         }
         private decimal _StartCash;
 
-        private BJCycle cycle;
-        private BetController controller => cycle.betController;
+        private IBetController controller => cycle.BetController;
         private User Player => cycle.Users.First();
+        private IBJCycle cycle;
 
         void Awake()
         {
@@ -58,7 +58,7 @@ namespace Xdd.Scripts.UI
             TotalBet = TotalBetSum;
         }
 
-        public void InitCycle(BJCycle cycle, User user)
+        public void InitCycle(IBJCycle cycle, User user)
         {
             this.cycle = cycle;
             cycle.gameController.OnChangeExecute += Game_OnChangeExecute;

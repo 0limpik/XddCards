@@ -9,6 +9,8 @@ namespace Xdd.Model.Cycles.BlackJack.Controllers
 {
     public class GameController : AState
     {
+        public override BJCycleStates State => BJCycleStates.Game;
+
         private const string c_usersCount = "Players must be more 0";
 
         private IBlackJack game = new Game();

@@ -30,9 +30,9 @@ namespace Xdd.Scripts.UI
 
         private decimal BetsSum => bets.Select(x => x.Amount).Sum();
 
-        private BetController controller => cycle.betController;
+        private IBetController controller => cycle.BetController;
         private User user;
-        BJCycle cycle;
+        IBJCycle cycle;
 
         private List<ChipElement> chips = new();
 
@@ -66,7 +66,7 @@ namespace Xdd.Scripts.UI
                 container.Add(chip);
             }
         }
-        public void InitCycle(BJCycle cycle, User user)
+        public void InitCycle(IBJCycle cycle, User user)
         {
             this.cycle = cycle;
             this.user = user;

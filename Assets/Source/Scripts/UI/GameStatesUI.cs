@@ -46,15 +46,15 @@ namespace Xdd.Scripts.UI
             gameManager.OnWait += () => EnableState("wait");
         }
 
-        public void InitCycle(BJCycle cycle, User user)
+        public void InitCycle(IBJCycle cycle, User user)
         {
             cycle.OnStateChange -= OnStateChange;
             cycle.OnStateChange += OnStateChange;
         }
 
-        private void OnStateChange(AState state)
+        private void OnStateChange(BJCycleStates state)
         {
-            if (state is GameController)
+            if (state == BJCycleStates.Game)
             {
                 EnableState("dealt");
             }

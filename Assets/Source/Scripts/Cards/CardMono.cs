@@ -6,7 +6,7 @@ using Xdd.Scripts.Base;
 namespace Xdd.Scripts.Cards
 {
     [ExecuteAlways]
-    internal class CardMono : MonoBehaviour
+    public class CardMono : MonoBehaviour
     {
         public event Action OnCardChange;
 

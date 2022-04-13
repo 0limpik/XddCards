@@ -25,7 +25,7 @@ namespace Xdd.Scripts.BlackJack
 
         private GameController controller => cycle.gameController;
         private User user;
-        private BJCycle cycle;
+        private IBJCycle cycle;
 
         [SerializeField]
         private CardCollection cardCollection;
@@ -50,7 +50,7 @@ namespace Xdd.Scripts.BlackJack
 
         private bool game;
 
-        public void InitCycle(BJCycle cycle, User user)
+        public void InitCycle(IBJCycle cycle, User user)
         {
             this.cycle = cycle;
             this.user = user;

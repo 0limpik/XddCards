@@ -10,7 +10,7 @@ using Xdd.Scripts.UI;
 
 namespace Xdd.Scripts.BlackJack
 {
-    internal class GameManager : MonoBehaviour
+    public class GameManager : MonoBehaviour
     {
         public event Action<float> OnHand;
         public event Action<float> OnBet;
@@ -23,24 +23,32 @@ namespace Xdd.Scripts.BlackJack
         [SerializeField] private BusyHandsScript bysyHands;
         [SerializeField] private GameScript gameScript;
 
-        private BJCycle cycle;
-        private Wallet wallet;
+        public IBJCycle cycle;
+        public bool isMaster;
 
         private bool isGame;
 
         void Awake()
         {
-            cycle = new BJCycle();
-            wallet = new Wallet(10000);
-            cycle.Init(new Wallet[] { wallet }, 6);
-
-            bysyHands.OnInteraction += (x) => OnInteraction(x).Forget();
         }
 
-        void Start()
+        async void Start()
         {
+            await TaskEx.Delay(10);
+
+            if (isMaster)
+            {
+                var wallet = new Wallet(10000);
+                cycle.Init(new Wallet[] { wallet }, 6);
+                bysyHands.OnInteraction += (x) => OnInteraction(x).Forget();
+            }
+
             Init();
-            cycle.Start();
+
+            if (isMaster)
+            {
+                cycle.Start();
+            }
             bysyHands.Lock(false);
             OnWait?.Invoke();
         }
@@ -104,6 +112,20 @@ namespace Xdd.Scripts.BlackJack
             isGame = false;
 
             return false;
+        }
+        public void OnHandInvoke(float delay)
+        {
+            OnHand?.Invoke(delay);
+        }
+
+        public void OnBetInvoke(float delay)
+        {
+            OnBet?.Invoke(delay);
+        }
+
+        public void OnWaitInvoke()
+        {
+            OnWait?.Invoke();
         }
     }
 }

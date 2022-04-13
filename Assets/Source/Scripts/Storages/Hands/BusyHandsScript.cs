@@ -18,7 +18,7 @@ namespace Xdd.Scripts.Hands
 
         private HandController controller => cycle.handController;
         private User user;
-        private BJCycle cycle;
+        private IBJCycle cycle;
 
         public HandScript[] Hands => AllHands.Where(x => x.IsBusy).ToArray();
         public IEnumerable<HandScript> AllHands => _Hands.Where(x => x.gameObject.activeSelf);
@@ -80,7 +80,7 @@ namespace Xdd.Scripts.Hands
             }
         }
 
-        public void InitCycle(BJCycle cycle, User user)
+        public void InitCycle(IBJCycle cycle, User user)
         {
             this.cycle = cycle;
             this.user = user;

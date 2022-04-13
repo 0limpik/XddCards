@@ -6,12 +6,15 @@ namespace Xdd.Model.Cycles.BlackJack.Controllers
 {
     public class HandController : AState
     {
+        public override BJCycleStates State => BJCycleStates.Hand;
+
         private const string c_handCount = "Hand need more 0";
 
         private User[] users;
         private List<Hand> avalibleHands;
 
         private int HandCount => users.SelectMany(x => x.hands).Count();
+
 
         internal HandController(User[] users, List<Hand> hands)
         {
