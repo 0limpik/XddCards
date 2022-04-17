@@ -957,6 +957,7 @@ GameObject:
   - component: {fileID: 717417797}
   - component: {fileID: 717417798}
   - component: {fileID: 717417799}
+  - component: {fileID: 717417800}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1012,7 +1013,6 @@ MonoBehaviour:
   uiScript: {fileID: 731684155}
   bysyHands: {fileID: 717417798}
   gameScript: {fileID: 717417799}
-  isMaster: 0
 --- !u!114 &717417798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1050,6 +1050,20 @@ MonoBehaviour:
   bysyHands: {fileID: 717417798}
   dealerHand: {fileID: 2055960053}
   trashDeck: {fileID: 81746860}
+--- !u!114 &717417800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717417795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb775def143702468ef05f5a3cc411d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handScript: {fileID: 1844798489}
+  dealerHandScript: {fileID: 2055960051}
 --- !u!1 &731684154
 GameObject:
   m_ObjectHideFlags: 0
@@ -1550,7 +1564,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1395052293}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Assets.Source.Server.Games.BlackJackPun, Server
         m_MethodName: Leave
         m_Mode: 1
@@ -2192,7 +2206,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1395052294}
-  - component: {fileID: 1395052293}
   m_Layer: 0
   m_Name: GamePun
   m_TagString: Untagged
@@ -2200,18 +2213,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1395052293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1395052292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aae6faf0b52a9bb449319839b75c0f74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1395052294
 Transform:
   m_ObjectHideFlags: 0
@@ -3026,7 +3027,7 @@ GameObject:
   - component: {fileID: 2055960053}
   - component: {fileID: 2055960051}
   m_Layer: 0
-  m_Name: Diller Hand
+  m_Name: Dealer Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

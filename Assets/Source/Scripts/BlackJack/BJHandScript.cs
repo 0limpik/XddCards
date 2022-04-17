@@ -22,7 +22,7 @@ namespace Xdd.Scripts.BlackJack
 
         public decimal Amount { get; private set; }
 
-        public Hand Hand
+        public IHand Hand
         {
             get => _Hand;
             set
@@ -31,7 +31,7 @@ namespace Xdd.Scripts.BlackJack
                 OnHandChange?.Invoke();
             }
         }
-        public Hand _Hand;
+        public IHand _Hand;
 
         [SerializeField]
         private HandUIScript handUIScript;

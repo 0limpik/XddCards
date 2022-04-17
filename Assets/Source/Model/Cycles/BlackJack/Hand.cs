@@ -8,7 +8,19 @@ using Xdd.Model.Games.BlackJack.Users;
 
 namespace Xdd.Model.Cycles.BlackJack
 {
-    public class Hand
+    public interface IHand
+    {
+        event Action<ICard> OnCardAdd;
+        bool CanTurn { get; }
+        PlayerStatus? Status { get; }
+
+
+        void Hit();
+        void Stand();
+        void DoubleUp();
+    }
+
+    public class Hand : IHand
     {
         internal IPlayer player;
 

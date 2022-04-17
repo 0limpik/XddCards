@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Xdd.Model.Cash;
 using Xdd.Model.Games;
 using Xdd.Model.Games.BlackJack;
@@ -7,7 +8,21 @@ using Xdd.Model.Games.BlackJack.Users;
 
 namespace Xdd.Model.Cycles.BlackJack.Controllers
 {
-    public class GameController : AState
+    public interface IGameController
+    {
+        event Action<bool> OnChangeExecute;
+
+        event Action<ICard> OnDillerUpHiddenCard;
+        event Action OnGameEnd;
+
+        IHand dealerHand { get; }
+        IHand playerHand { get; }
+
+        void Start();
+        Task StartAsync();
+    }
+
+    public class GameController : AState//, IGameController
     {
         public override BJCycleStates State => BJCycleStates.Game;
 
@@ -27,11 +42,9 @@ namespace Xdd.Model.Cycles.BlackJack.Controllers
             remove => game.OnDillerUpHiddenCard -= value;
         }
 
-        public Hand dealerHand { get; private set; }
+        public IHand dealerHand { get; private set; }
 
         private User[] users;
-
-        private IPlayer[] Players => game.players;
 
         internal GameController(User[] users)
         {

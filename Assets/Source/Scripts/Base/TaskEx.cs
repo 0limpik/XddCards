@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Xdd.Scripts.Base
 {
-    internal static class TaskEx
+    public static class TaskEx
     {
         public static async Task Delay(float delay)
         {

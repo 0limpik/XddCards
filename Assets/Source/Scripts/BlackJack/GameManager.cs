@@ -24,7 +24,6 @@ namespace Xdd.Scripts.BlackJack
         [SerializeField] private GameScript gameScript;
 
         public IBJCycle cycle;
-        public bool isMaster;
 
         private bool isGame;
 
@@ -34,23 +33,14 @@ namespace Xdd.Scripts.BlackJack
 
         async void Start()
         {
-            await TaskEx.Delay(10);
-
-            if (isMaster)
-            {
-                var wallet = new Wallet(10000);
-                cycle.Init(new Wallet[] { wallet }, 6);
-                bysyHands.OnInteraction += (x) => OnInteraction(x).Forget();
-            }
-
-            Init();
-
-            if (isMaster)
-            {
-                cycle.Start();
-            }
-            bysyHands.Lock(false);
-            OnWait?.Invoke();
+            //await TaskEx.Delay(10);
+            //var wallet = new Wallet(10000);
+            //cycle.Init(new Wallet[] { wallet }, 6);
+            //bysyHands.OnInteraction += (x) => OnInteraction(x).Forget();
+            //Init();
+            //cycle.Start();
+            //bysyHands.Lock(false);
+            //OnWait?.Invoke();
         }
 
         private async Task OnInteraction(HandScript hand)
@@ -89,7 +79,7 @@ namespace Xdd.Scripts.BlackJack
 
             bysyHands.InitCycle(cycle, player);
             uiScript.InitCycle(cycle, player);
-            gameScript.InitCycle(cycle, player);
+            //gameScript.InitCycle(cycle, player);
         }
 
         private bool TrySwitchState()

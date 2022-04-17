@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Xdd.Model.Enums;
 using Xdd.Model.Games;
@@ -24,5 +25,16 @@ namespace Xdd.Scripts.Cards
 
             return ToString();
         }
+    }
+
+    [Serializable]
+    public class Card : ICard
+    {
+        [field: SerializeField] public Suits suit { get; set; }
+
+        [field: SerializeField] public Ranks rank { get; set; }
+
+        public override string ToString()
+            => $"{rank} {suit}";
     }
 }

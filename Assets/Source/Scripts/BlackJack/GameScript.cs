@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using UnityEngine;
 using Xdd.Model.Cycles.BlackJack;
@@ -12,10 +11,9 @@ using Xdd.Scripts.Cards;
 using Xdd.Scripts.Hands;
 using Xdd.Scripts.UI;
 
-[assembly: InternalsVisibleTo("Assembly-CSharp-Editor")]
 namespace Xdd.Scripts.BlackJack
 {
-    internal class GameScript : MonoBehaviour
+    public class GameScript : MonoBehaviour
     {
         public event Action OnDealtEnd;
         public event Action<float> OnGameResult;
@@ -23,7 +21,7 @@ namespace Xdd.Scripts.BlackJack
 
         public float afterResultDelay;
 
-        private GameController controller => cycle.gameController;
+        public IGameController controller;
         private User user;
         private IBJCycle cycle;
 
@@ -70,18 +68,20 @@ namespace Xdd.Scripts.BlackJack
             }
         }
 
-        private void StartGame()
+        public async void StartGame()
         {
+            bysyHands.Lock(true);
             game = true;
 
             var handCount = bysyHands.Hands.Length;
 
             bysyHands.AllHands.ToList().ForEach(x => x.GetComponent<BJHandScript>().Hand = null);
 
-            for (int i = 0; i < handCount; i++)
+            for (int i = 0; i < 1/*handCount*/; i++)
             {
-                var hand = bysyHands.Hands[i];
-                var player = user.Hands[i];
+                var hand = bysyHands.AllHands.ToArray()[i];
+                //var player = user.Hands[i];
+                var player = controller.playerHand;
 
                 var storage = hand.GetComponent<HandStorageScript>();
                 var bjHand = hand.GetComponent<BJHandScript>();
@@ -91,11 +91,14 @@ namespace Xdd.Scripts.BlackJack
                     bjHand.InvokeOnCardsChange();
                 };
                 bjHand.Hand = player;
-                bjHand.Bet(player.Amount);
+                //bjHand.Bet(player.Amount);
+                bjHand.Bet(0);
             }
 
-            controller.Start();
-
+            await TaskEx.Delay(1f);
+            await controller.StartAsync();
+            await TaskEx.Delay(1f);
+            Debug.Log("Start Complete");
             dealerHiddenCard = CreateCard(null);
             dealerHiddenCard.transform.rotation = Quaternion.AngleAxis(180f, Vector3.forward);
             dealerHand.AddCard(manager, dealerHiddenCard).OnEnd +=

@@ -1,3 +1,26 @@
 {
-	"name": "Network"
+    "name": "Network",
+    "rootNamespace": "",
+    "references": [
+        "GUID:731f6bfff9342b54eb4b75470ca0ff90",
+        "GUID:61018f7045be3b4438b9a8ed2a4d5307",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Grpc.Core.Api.dll",
+        "Grpc.Net.Client.dll",
+        "Grpc.Net.Client.Web.dll",
+        "Google.Protobuf.dll",
+        "Grpc.Net.Common.dll",
+        "Microsoft.Extensions.Logging.Abstractions.dll",
+        "System.Runtime.CompilerServices.Unsafe.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
