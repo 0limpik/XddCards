@@ -1,0 +1,16 @@
+{
+    "name": "XddCards.Scripts",
+    "rootNamespace": "",
+    "references": [
+        "GUID:786308b4e24d8ef4e85ad93268e59841"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,3 +1,6 @@
-[submodule "Assets/Source/Network/Protos"]
-	path = Assets/Source/Network/Protos
+[submodule "Assets/Source/XddCards.Model"]
+	path = Assets/Source/XddCards.Model
+	url = https://github.com/0limpik/XddCards.Model
+[submodule "Assets/Source/XddCards.Protos"]
+	path = Assets/Source/XddCards.Protos
 	url = https://github.com/0limpik/XddCards.Protos

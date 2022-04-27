@@ -6,7 +6,7 @@ using Xdd.Model.Enums;
 using Xdd.Model.Games;
 using Xdd.Scripts.Cards;
 
-namespace Assets.Editor.EditorWindows
+namespace Xdd.Editor.EditorWindows
 {
     internal class CardFromMaterialCreator : EditorWindow
     {

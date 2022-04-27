@@ -1,12 +1,12 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Assets.Editor.EditorWindows;
 using UnityEditor;
 using UnityEngine;
+using Xdd.Editor.EditorWindows;
 using Debug = UnityEngine.Debug;
 
-namespace Assets.Editor.MenuItems
+namespace Xdd.Editor.MenuItems
 {
     public class MenuItems : MonoBehaviour
     {
@@ -32,34 +32,31 @@ namespace Assets.Editor.MenuItems
 
         readonly static string compilerPath = $"{Application.dataPath}/Plugins/Protoc.Compiler/protoc.exe";
 
-        readonly static string protosPath = $"{Application.dataPath}/Source/Network/Protos/XddCards.Protos/";
-        readonly static string csharpOut = $"{Application.dataPath}/Source/Network/ProtosCompile/CS";
-        readonly static string grpcOut = $"{Application.dataPath}/Source/Network/ProtosCompile/GRPC";
+        readonly static string protosInput = $"{Application.dataPath}/Source/XddCards.Protos";
+        readonly static string protosOut = $"{Application.dataPath}/Source/XddCards.Protos/Protos.Compile";
 
         [MenuItem("Xdd/Recompile Protos")]
         static void RecompileProtos()
         {
-            Directory.GetFiles(csharpOut).ToList().ForEach(File.Delete);
-            Directory.GetFiles(grpcOut).ToList().ForEach(File.Delete);
+            Directory.GetFiles(protosOut, "*", SearchOption.AllDirectories).ToList().ForEach(File.Delete);
+            Directory.GetDirectories(protosOut).ToList().ForEach(Directory.Delete);
 
-            var files = Directory.GetFiles(protosPath, "*.proto", SearchOption.AllDirectories).Select(x => x.Replace('\\', '/'));
+            var files = Directory.GetFiles(protosInput, "*.proto", SearchOption.AllDirectories).Select(x => x.Replace('\\', '/'));
 
             foreach (var file in files)
             {
-                var path = $"{file.Replace(protosPath, "")}";
-                var dir = Path.GetDirectoryName(path);
+                var path = $"{file.Replace($"{protosInput}/", "")}";
+                var dir = Path.GetDirectoryName(path).Replace('\\', '/');
 
-                var csharpDir = $"{csharpOut}/{dir}";
-                var grpcDir = $"{grpcOut}/{dir}";
+                var outDir = $"{protosOut}/{dir}";
 
                 Debug.Log($"Compile: {path}");
 
-                Directory.CreateDirectory(csharpDir);
-                Directory.CreateDirectory(grpcDir);
+                Directory.CreateDirectory(outDir);
 
-                var proto_path = $"--proto_path=\"{protosPath}\"";
-                var csharp_out = $"--csharp_out=\"{csharpDir}\"";
-                var grpc_out = $"--grpc_out=\"{grpcDir}\"";
+                var proto_path = $"--proto_path=\"{protosInput}\"";
+                var csharp_out = $"--csharp_out=\"{outDir}\"";
+                var grpc_out = $"--grpc_out=\"{outDir}\"";
                 var plugin = $"--plugin=protoc-gen-grpc=grpc_csharp_plugin.exe";
 
                 var arg = $"\"{path}\" {proto_path} {csharp_out} {grpc_out} {plugin}";

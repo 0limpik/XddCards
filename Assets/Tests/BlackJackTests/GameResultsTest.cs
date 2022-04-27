@@ -50,7 +50,7 @@ namespace Assets.Tests.BlackJackTest
             => TestGame(ranks, (game) =>
             {
                 Debug.Log("Player Stand");
-                game.Stand(game.players[0]);
+                game.players[0].Stand();
             });
 
         [TestCase(new Ranks[] { Ranks.Ten, Ranks.Ten, Ranks.Ace, Ranks.Nine, Ranks.Ten },
@@ -60,9 +60,9 @@ namespace Assets.Tests.BlackJackTest
              => TestGame(ranks, (game) =>
              {
                  Debug.Log("Player Hit");
-                 game.Hit(game.players[0]);
+                 game.players[0].Hit();
                  Debug.Log("Player Hit");
-                 game.Hit(game.players[0]);
+                 game.players[0].Hit();
              });
 
         #endregion

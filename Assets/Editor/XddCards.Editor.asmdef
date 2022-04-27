@@ -1,0 +1,19 @@
+{
+    "name": "XddCards.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:786308b4e24d8ef4e85ad93268e59841",
+        "GUID:61018f7045be3b4438b9a8ed2a4d5307"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

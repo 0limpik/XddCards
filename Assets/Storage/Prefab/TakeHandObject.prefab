@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 3827244643589149326}
   - component: {fileID: 3827244643589149327}
   - component: {fileID: 3827244643589149324}
+  - component: {fileID: 6439105093958297272}
   - component: {fileID: 3827244643589149321}
   - component: {fileID: 1186164551514279945}
   - component: {fileID: 6373060167055657179}
-  - component: {fileID: 6439105093958297272}
   m_Layer: 0
   m_Name: TakeHandObject
   m_TagString: Untagged
@@ -88,6 +88,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6439105093958297272
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3827244643589149314}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &3827244643589149321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,20 +141,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveTime: 1
---- !u!64 &6439105093958297272
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3827244643589149314}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &3827244643940285777
 GameObject:
   m_ObjectHideFlags: 0

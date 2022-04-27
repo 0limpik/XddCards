@@ -49,7 +49,9 @@ namespace Assets.Editor.CustomEditors
             GUILayout.Label($"Task Quele c:{tasksInfo.Count} a:{tasksInfo.Where(x => x.onEnd == null).Count()}");
             GUILayout.Label($"Time: {Time.time}");
             GUILayout.EndHorizontal();
-            scroll = GUILayout.BeginScrollView(scroll, GUILayout.Height(300));
+
+            var width = tasksInfo.Count * 25;
+            scroll = GUILayout.BeginScrollView(scroll, GUILayout.Height(width > 300 ? 300 : width));
             foreach (var info in tasksInfo)
             {
                 GUILayout.BeginHorizontal();

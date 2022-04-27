@@ -2,7 +2,7 @@
 using UnityEngine;
 using Xdd.Scripts.Cards;
 
-namespace Assets.Editor.CustomEditors
+namespace Xdd.Editor.CustomEditors
 {
     [CustomEditor(typeof(CardObject))]
     internal class CardObjectEditor : UnityEditor.Editor

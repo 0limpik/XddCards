@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Editor.EditorWindows
+namespace Xdd.Editor.EditorWindows
 {
     internal class MaterialAutomizerWindow : EditorWindow
     {
