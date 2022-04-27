@@ -1,5 +1,6 @@
 # XddCards
-[Играть в браузере](https://0limpik.github.io/XddCards/)
+[Играть в браузере](https://0limpik.github.io/XddCards/) single, build 4/9/2022
+ 
 ## Управление
 ЛКМ - взять, ПКМ - отдать руку
 
@@ -12,4 +13,4 @@
 - UI Toolkit
 - async/await
 - Unit-tests
--Grpc, asp-net, кодогенератор клиентов Grpc
+- Grpc, asp-net, кодогенератор клиентов Grpc
