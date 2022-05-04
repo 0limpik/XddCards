@@ -9,7 +9,7 @@
 "+" - взять, "-" - остановиться, "2х" взять, умножив ставку в 2 раза
 ## Используется
 - git submodules [Unity](https://github.com/0limpik/XddCards/tree/master/Assets/Source) и [Server](https://github.com/0limpik/XddCards.Server)
-- Разделение кода на [Model](https://github.com/0limpik/XddCards.Model) и [Scripts](https://github.com/0limpik/XddCards/tree/master/Assets/Source/Scripts)
+- Разделение кода на [Model](https://github.com/0limpik/XddCards.Model) и [Scripts](https://github.com/0limpik/XddCards/tree/master/Assets/Source/XddCards.Scripts)
 - UI Toolkit
 - async/await
 - Unit-tests
